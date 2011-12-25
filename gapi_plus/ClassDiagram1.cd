@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="gapi_plus.Appenders.Appender" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Appenders\Appender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gapi_plus.Appenders.CodeSwarmAppender" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Appenders\CodeSwarmAppender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gapi_plus.Appenders.FileAppender" Collapsed="true">
+    <Position X="1.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAABAAAAAAAEAAAAAAIAAAAAAAAAAAAAVAAAA=</HashCode>
+      <FileName>Appenders\FileAppender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gapi_plus.Appenders.LogEvent" Collapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAABAAAQ=</HashCode>
+      <FileName>Appenders\LogEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gapi_plus.Generator" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAAQAAAAEAAAAAAAAI=</HashCode>
+      <FileName>Generator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gapi_plus.GeneratorSetting" Collapsed="true">
+    <Position X="10.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAABAQAAAAAAAAAAAAAAgAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>GeneratorSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gapi_plus.mainForm" Collapsed="true">
+    <Position X="5.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASEAIIQCCEAQBAAAACAAAgCABA4AAgCECASAQAAACA=</HashCode>
+      <FileName>mainForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gapi_plus.Program" Collapsed="true">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gapi_plus.RuleName" Collapsed="true">
+    <Position X="10.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAQAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>RuleName.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Google.Apis.Plus.v1.Data.Acl" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABgCAAAYAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Google.Apis.Plus.v1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Google.Apis.Plus.v1.Data.Activity" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAOEAQESABUhUBgWIEAgAgAEIIIAAACSAAAAECABlA=</HashCode>
+      <FileName>Google.Apis.Plus.v1.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Google.Apis.Plus.v1.Data.ActivityFeed" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAASAAAAQABSCUAAUgkAAAAAAAAAgAAAQIAAAEAAEgA=</HashCode>
+      <FileName>Google.Apis.Plus.v1.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Google.Apis.Plus.v1.Data.Comment" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACAAAAAABSgQAgWoEACAgAEAgAAAAAQAAAAECAAgA=</HashCode>
+      <FileName>Google.Apis.Plus.v1.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Google.Apis.Plus.v1.Data.CommentFeed" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAASAAAAQABQCUAAUAkAAAAAAAAAgAAAQIAAAEAAEgA=</HashCode>
+      <FileName>Google.Apis.Plus.v1.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Google.Apis.Plus.v1.Data.PeopleFeed" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQABSCUAAUgkAAAAAAAAAgAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Google.Apis.Plus.v1.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Google.Apis.Plus.v1.Data.Person" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADEACAAHBQAUHwUAFIgAwAGQAMABEAiIQAAIAEAxA=</HashCode>
+      <FileName>Google.Apis.Plus.v1.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Google.Apis.Plus.v1.Data.PlusAclentryResource" Collapsed="true">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAgA=</HashCode>
+      <FileName>Google.Apis.Plus.v1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Google.Apis.Plus.v1.PlusService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oAAgiAAAIMAAAAQgACAEAAQAAgAAAAAAAUAAAKAAIAI=</HashCode>
+      <FileName>Google.Apis.Plus.v1.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Google.Apis.Plus.v1.ActivitiesResource" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAABAAAAAAAAAAAAAAAAAAEAAAAAgAAI=</HashCode>
+      <FileName>Google.Apis.Plus.v1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Google.Apis.Plus.v1.CommentsResource" Collapsed="true">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAABAAAAAAAAAAAAAAAAAAEAAAAAAAAI=</HashCode>
+      <FileName>Google.Apis.Plus.v1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Google.Apis.Plus.v1.PeopleResource" Collapsed="true">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAACABAAAAAAAAAAAAAAAAAAEAAAAAgAAA=</HashCode>
+      <FileName>Google.Apis.Plus.v1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gapi_plus.Properties.Resources" Collapsed="true">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gapi_plus.Properties.Settings" Collapsed="true">
+    <Position X="12.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gapi_plus.Visualizer" Collapsed="true">
+    <Position X="5.25" Y="4.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="gapi_plus.Visualizer.Visualizers" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Visualizer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Visualizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gapi_plus.Appenders.GourceAppender" Collapsed="true">
+    <Position X="2.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Appenders\GourceAppender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="gapi_plus.Rules" Collapsed="true">
+    <Position X="5.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAEAAAAAAAAAAAAAAIACAAAAAAAACAAAAGAAEA=</HashCode>
+      <FileName>RuleName.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>
