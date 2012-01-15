@@ -39,6 +39,8 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+			this.checkBox2 = new System.Windows.Forms.CheckBox();
+			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.tbFileCS = new System.Windows.Forms.TextBox();
 			this.btBrowse1 = new System.Windows.Forms.Button();
@@ -46,8 +48,6 @@
 			this.tbFileG = new System.Windows.Forms.TextBox();
 			this.btBrowse2 = new System.Windows.Forms.Button();
 			this.nudMaxRes = new System.Windows.Forms.NumericUpDown();
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
-			this.checkBox2 = new System.Windows.Forms.CheckBox();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tabControl2.SuspendLayout();
 			this.tabPage4.SuspendLayout();
@@ -163,7 +163,7 @@
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Padding = new System.Windows.Forms.Padding(10);
-			this.tabPage3.Size = new System.Drawing.Size(647, 544);
+			this.tabPage3.Size = new System.Drawing.Size(647, 546);
 			this.tabPage3.TabIndex = 0;
 			this.tabPage3.Text = "About rules ";
 			// 
@@ -175,7 +175,7 @@
 			this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.richTextBox1.Location = new System.Drawing.Point(10, 10);
 			this.richTextBox1.Name = "richTextBox1";
-			this.richTextBox1.Size = new System.Drawing.Size(627, 524);
+			this.richTextBox1.Size = new System.Drawing.Size(627, 526);
 			this.richTextBox1.TabIndex = 0;
 			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
 			// 
@@ -242,6 +242,38 @@
 			this.tableLayoutPanel2.Size = new System.Drawing.Size(649, 59);
 			this.tableLayoutPanel2.TabIndex = 0;
 			// 
+			// checkBox2
+			// 
+			this.checkBox2.Checked = true;
+			this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.checkBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.checkBox2.Location = new System.Drawing.Point(3, 32);
+			this.checkBox2.Name = "checkBox2";
+			this.checkBox2.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
+			this.checkBox2.Size = new System.Drawing.Size(144, 24);
+			this.checkBox2.TabIndex = 2;
+			this.checkBox2.Text = "gource";
+			this.checkBox2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.checkBox2.UseVisualStyleBackColor = true;
+			this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+			// 
+			// checkBox1
+			// 
+			this.checkBox1.Checked = true;
+			this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.checkBox1.Location = new System.Drawing.Point(3, 3);
+			this.checkBox1.Name = "checkBox1";
+			this.checkBox1.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
+			this.checkBox1.Size = new System.Drawing.Size(144, 23);
+			this.checkBox1.TabIndex = 2;
+			this.checkBox1.Text = "code_swarm";
+			this.checkBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.checkBox1.UseVisualStyleBackColor = true;
+			this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+			// 
 			// panel1
 			// 
 			this.panel1.Controls.Add(this.tbFileCS);
@@ -260,7 +292,7 @@
 			this.tbFileCS.Name = "tbFileCS";
 			this.tbFileCS.Size = new System.Drawing.Size(418, 23);
 			this.tbFileCS.TabIndex = 0;
-			this.tbFileCS.Text = "actions.xml";
+			this.tbFileCS.Text = "C:\\actions.xml";
 			// 
 			// btBrowse1
 			// 
@@ -291,7 +323,7 @@
 			this.tbFileG.Name = "tbFileG";
 			this.tbFileG.Size = new System.Drawing.Size(418, 23);
 			this.tbFileG.TabIndex = 0;
-			this.tbFileG.Text = "actions.log";
+			this.tbFileG.Text = "C:\\actions.log";
 			// 
 			// btBrowse2
 			// 
@@ -327,38 +359,6 @@
             0,
             0,
             0});
-			// 
-			// checkBox1
-			// 
-			this.checkBox1.Checked = true;
-			this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.checkBox1.Location = new System.Drawing.Point(3, 3);
-			this.checkBox1.Name = "checkBox1";
-			this.checkBox1.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-			this.checkBox1.Size = new System.Drawing.Size(144, 23);
-			this.checkBox1.TabIndex = 2;
-			this.checkBox1.Text = "code_swarm";
-			this.checkBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.checkBox1.UseVisualStyleBackColor = true;
-			this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-			// 
-			// checkBox2
-			// 
-			this.checkBox2.Checked = true;
-			this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.checkBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.checkBox2.Location = new System.Drawing.Point(3, 32);
-			this.checkBox2.Name = "checkBox2";
-			this.checkBox2.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-			this.checkBox2.Size = new System.Drawing.Size(144, 24);
-			this.checkBox2.TabIndex = 2;
-			this.checkBox2.Text = "gource";
-			this.checkBox2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.checkBox2.UseVisualStyleBackColor = true;
-			this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
 			// 
 			// mainForm
 			// 

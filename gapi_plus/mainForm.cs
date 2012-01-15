@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Core;
+using System.IO;
 
 namespace gapi_plus {
 	public partial class mainForm : Form {
@@ -38,6 +39,7 @@ namespace gapi_plus {
 				}
 			}
 			finally {
+				file.Refresh();
 				if (file.Exists)
 					file.Delete();
 			}
@@ -61,9 +63,9 @@ namespace gapi_plus {
 			rule[Rules.ShareName] = "id.type";
 			rule[Rules.NotShare] = "/type";
 			rule[Rules.Post] = "sharepath/id/id.type";
-			rule[Rules.Comment] = "sharepath/types/date_actor.type";
-			rule[Rules.Plus] = "sharepath/types/id/postid.type";
-			rule[Rules.Reshare] = "sharepath/types/id/postid.type";
+			rule[Rules.Comment] = "sharepath/id/types/date_actor.type";
+			rule[Rules.Plus] = "sharepath/id/types/postid.type";
+			rule[Rules.Reshare] = "sharepath/id/types/postid.type";
 
 			fillData();
 		}
@@ -127,6 +129,13 @@ namespace gapi_plus {
 				tableLayoutPanel1.Controls.Add(sc, 1, 5);
 				btGen.Enabled = false;
 				try {
+
+					if (tbFileCS.Enabled && File.Exists(tbFileCS.Text))
+						File.Delete(tbFileCS.Text);
+
+					if (tbFileG.Enabled && File.Exists(tbFileG.Text))
+						File.Delete(tbFileG.Text);
+
 					(new Generator("AIzaSyCqVDlXyRu1I1HhUvvPjc_q2038gFSnb6U", sc)).Run(new GeneratorSetting() {
 						ProfileID = tbID.Text,
 						Rules = rules,

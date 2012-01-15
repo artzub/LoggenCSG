@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using Core;
 
 namespace gapi_plus {
-	internal class GeneratorSetting {
+	internal class GeneratorSetting : Core.GeneratorSetting {
 		public Visualizers.Types VisLogs {
 			get;
 			set;

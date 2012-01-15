@@ -3,7 +3,7 @@
 namespace Logger {
 	public class FileAppender : Appender {
 
-		private string delimiter;
+		protected string delimiter;
 
 		protected virtual string Parse(LogEvent logEvent) {
 			return string.Format("{1}{0}{2}{0}{3}{0}{4}", 
@@ -36,7 +36,7 @@ namespace Logger {
 			var file = new FileInfo(FileName);
 
 			if (!file.Exists)
-				Write(GetHeader());
+				WriteHeader();
 
 			Write(Parse(logEvent));			
 		}
@@ -47,8 +47,20 @@ namespace Logger {
 			}
 		}
 
+		private void WriteHeader() {
+			var str = GetHeader();
+			if (!string.IsNullOrWhiteSpace(str))
+				Write(str);
+		}
+
+		private void WriteFooter() {
+			var str = GetFooter();
+			if (!string.IsNullOrWhiteSpace(str))
+				Write(str);
+		}
+
 		~FileAppender() {
-			Write(GetFooter());
+			WriteFooter();
 		}
 	}
 }

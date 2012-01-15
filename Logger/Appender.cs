@@ -8,6 +8,9 @@ namespace Logger {
 		protected Appender() {
 		}
 
+		~Appender() {
+		}
+
 		protected abstract void DoAppend(LogEvent logEvent); 
 
 		public void Append(LogEvent logEvent) {

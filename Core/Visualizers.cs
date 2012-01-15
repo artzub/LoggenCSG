@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Logger;
 
-namespace gapi_plus {
+namespace Core {
 	public class Visualizers {
 		[Flags]
 		public enum Types {
