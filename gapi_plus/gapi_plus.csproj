@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UDGenerator.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="GeneratorSetting.cs" />
     <Compile Include="Google.Apis.Plus.v1.cs" />
@@ -79,7 +80,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleName.cs" />
-    <Compile Include="Visualizers.cs" />
     <EmbeddedResource Include="mainForm.resx">
       <DependentUpon>mainForm.cs</DependentUpon>
     </EmbeddedResource>

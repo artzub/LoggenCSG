@@ -54,18 +54,18 @@ namespace gapi_plus {
 			rule[Rules.ShareName] = "postId.type";
 			rule[Rules.NotShare] = "/type";
 			rule[Rules.Post] = "sharepath/id.type";
-			rule[Rules.Comment] = "postfilename.type";
-			rule[Rules.Plus] = "postfilename.type";
-			rule[Rules.Reshare] = "postfilename.type";
+			rule[Rules.Comment] = "postfilename.actor.type";
+			rule[Rules.Plus] = "postfilename.id.type";
+			rule[Rules.Reshare] = "postfilename.id.type";
 
 			rule = rules[Visualizers.Gource];
 			rule[Rules.SharePath] = "/type/actor/id/";
 			rule[Rules.ShareName] = "id.type";
 			rule[Rules.NotShare] = "/type";
 			rule[Rules.Post] = "sharepath/id/id.type";
-			rule[Rules.Comment] = "sharepath/id/types/date_actor.type";
-			rule[Rules.Plus] = "sharepath/id/types/postid.type";
-			rule[Rules.Reshare] = "sharepath/id/types/postid.type";
+			rule[Rules.Comment] = "sharepath/postid/types/id.type";
+			rule[Rules.Plus] = "sharepath/postid/types/id.type";
+			rule[Rules.Reshare] = "sharepath/postid/types/id.type";
 
 			fillData();
 		}
@@ -135,7 +135,7 @@ namespace gapi_plus {
 
 					if (tbFileG.Enabled && File.Exists(tbFileG.Text))
 						File.Delete(tbFileG.Text);
-
+					//UD
 					(new Generator("AIzaSyCqVDlXyRu1I1HhUvvPjc_q2038gFSnb6U", sc)).Run(new GeneratorSetting() {
 						ProfileID = tbID.Text,
 						Rules = rules,
@@ -143,6 +143,10 @@ namespace gapi_plus {
 						LogFiles = new Dictionary<Visualizers.Types, string> {
 							{Visualizers.Code_swarm, tbFileCS.Text},
 							{Visualizers.Gource, tbFileG.Text}
+						},
+						Methods = new Dictionary<Visualizers.Types, GeneratorLogsMeth> {
+							{Visualizers.Code_swarm, UDGenerator.LogGen},
+							{Visualizers.Gource, Generator.LogGen}
 						},
 						MaxResults = Convert.ToInt32(nudMaxRes.Value)
 					});

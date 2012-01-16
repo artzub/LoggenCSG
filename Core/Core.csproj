@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Generator.cs" />
+    <Compile Include="GeneratorSetting.cs" />
     <Compile Include="IStater.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateControl.cs">
@@ -50,11 +52,18 @@
     <Compile Include="StateControl.Designer.cs">
       <DependentUpon>StateControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Visualizers.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="StateControl.resx">
       <DependentUpon>StateControl.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Logger\Logger.csproj">
+      <Project>{15204A91-9E2C-476B-AE02-744E8D59E53B}</Project>
+      <Name>Logger</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

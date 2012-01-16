@@ -13,6 +13,11 @@ namespace gapi_plus {
 			set;
 		}
 
+		public Dictionary<Visualizers.Types, GeneratorLogsMeth> Methods {
+			get;
+			set;
+		}
+
 		public Dictionary<Visualizers.Types, Dictionary<Rules, string>> Rules {
 			get;
 			set;
