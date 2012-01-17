@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using Google.Apis.Plus.v1.Data;
 
 namespace gapi_plus {
-	internal class Generator : Core.Generator {
+	internal class Generator : Core.Generator, IDisposable {
 
 		private string ApiKey {
 			get;
@@ -16,7 +16,7 @@ namespace gapi_plus {
 		}
 
 		private PlusService service = null;
-		private PlusService Service {
+		protected PlusService Service {
 			get {
 				if (service == null)
 					service = new PlusService();
@@ -270,6 +270,8 @@ namespace gapi_plus {
 			}
 		}
 
+		protected Dictionary<Visualizers.Types, Appender> loggers = null;
+
 		protected override object GenerateLog(Core.GeneratorSetting insetting = null) {
 
 			var setting = insetting as GeneratorSetting;
@@ -279,9 +281,12 @@ namespace gapi_plus {
 			var step = setting.MaxResults / 100;
 			string nextPage = string.Empty;
 
-			var loggers = new Dictionary<Visualizers.Types, Appender>();
-			foreach (var log in setting.LogFiles)
-				loggers[log.Key] = Visualizers.Loggers[log.Key].Invoke(new object[] { log.Value }) as Appender;
+			if (loggers == null)
+				loggers = new Dictionary<Visualizers.Types, Appender>();
+			foreach (var log in setting.LogFiles) {
+				if (!loggers.ContainsKey(log.Key) || loggers[log.Key] == null)
+					loggers[log.Key] = Visualizers.Loggers[log.Key].Invoke(new object[] { log.Value }) as Appender;
+			}
 			
 			while(step != 0) {
 
@@ -377,13 +382,14 @@ namespace gapi_plus {
 					step = 0;
 				}
 			}
-
-			foreach (var log in setting.LogFiles) {
-				loggers[log.Key] = null;
-			}
-			loggers = null;
-
 			return true;
+		}
+
+		public void Dispose() {
+			if (loggers != null)
+				foreach (var log in loggers.Keys) 
+					loggers[log].Dispose();
+			loggers = null;
 		}
 	}
 

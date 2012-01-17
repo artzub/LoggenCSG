@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Logger {
 	public class FileAppender : Appender {
 
 		protected string delimiter;
+		protected bool dispose = false;
 
 		protected virtual string Parse(LogEvent logEvent) {
 			return string.Format("{1}{0}{2}{0}{3}{0}{4}", 
@@ -60,7 +62,15 @@ namespace Logger {
 		}
 
 		~FileAppender() {
-			WriteFooter();
+			if (!dispose)
+				WriteFooter();
+			dispose = true;
+		}
+
+		public override void Dispose() {
+			if (!dispose)
+				WriteFooter();
+			dispose = true;
 		}
 	}
 }

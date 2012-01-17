@@ -1,0 +1,11 @@
+Google .NET Client Library
+Stable Release '20110831-1.0.0-beta'
+Wednesday, August 31, 2011
+===========================================
+
+This is the beta release of the Google .NET Client Library. 
+
+Major features which are included in this build:
+ - Support for all Discovery Google APIs
+ - Generation of strongly typed client libraries
+ - OAuth2 using DotNetOpenAuth

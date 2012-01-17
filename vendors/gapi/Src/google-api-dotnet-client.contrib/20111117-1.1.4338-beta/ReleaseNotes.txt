@@ -1,0 +1,25 @@
+Google .NET Client Library
+Stable Release '20111117-1.1.4338-beta'
+Thursday, November 17, 2011
+===========================================
+
+Changes:
+  729: Added tag 20111109-1.1.4329-beta for changeset ed28c48aa073
+  728: Added tag 20111109-1.1.4329-beta for changeset adfc9ae26f49
+  727: Look up parameter information in Service as well as Method when building request.
+  726: Filter out hand coded common parameters.
+  725: Update build release program to include new Google.Tests.Utility DLL.
+  724: Updated assembly versions to prepare for 1.1 release.
+  723: Fix syntax error caused by special characters in namespace.
+  722: Merged issue_145_remove_nunit_ref
+  719: Merged with .orig change.
+  717: Merge with Issue 155
+  716: Merge issue 164, support common parameters.
+  709: merge in branch issue_169_licences as per codereview 5323073
+  703: Merge.
+  699: Merge fix for wiki pages with empty titles.
+  698: Merge Issue #159.
+  697: Merge.
+  695: Merge issue #153.
+  692: Merge with issue_159_jsonreader_should_be_static
+

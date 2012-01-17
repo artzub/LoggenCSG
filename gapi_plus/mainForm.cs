@@ -50,13 +50,13 @@ namespace gapi_plus {
 			};
 
 			var rule = rules[Visualizers.Code_swarm];
-			rule[Rules.SharePath] = "/type/actor/";
-			rule[Rules.ShareName] = "postId.type";
-			rule[Rules.NotShare] = "/type";
-			rule[Rules.Post] = "sharepath/id.type";
-			rule[Rules.Comment] = "postfilename.actor.type";
-			rule[Rules.Plus] = "postfilename.id.type";
-			rule[Rules.Reshare] = "postfilename.id.type";
+			rule[Rules.SharePath] = "/type/";
+			rule[Rules.ShareName] = "actor.type";
+			rule[Rules.NotShare] = "/type/";
+			rule[Rules.Post] = "sharepath/actor.type";
+			rule[Rules.Comment] = "sharepath/actor.type";
+			rule[Rules.Plus] = "sharepath/id.type";
+			rule[Rules.Reshare] = "sharepath/id.type";
 
 			rule = rules[Visualizers.Gource];
 			rule[Rules.SharePath] = "/type/actor/id/";
@@ -136,7 +136,7 @@ namespace gapi_plus {
 					if (tbFileG.Enabled && File.Exists(tbFileG.Text))
 						File.Delete(tbFileG.Text);
 					//UD
-					(new Generator("AIzaSyCqVDlXyRu1I1HhUvvPjc_q2038gFSnb6U", sc)).Run(new GeneratorSetting() {
+					(new RGenerator("AIzaSyCqVDlXyRu1I1HhUvvPjc_q2038gFSnb6U", sc)).Run(new GeneratorSetting() {
 						ProfileID = tbID.Text,
 						Rules = rules,
 						VisLogs = Visualizers.Code_swarm | Visualizers.Gource,

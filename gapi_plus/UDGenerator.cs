@@ -84,20 +84,7 @@ namespace gapi_plus {
 				Action = action,
 				FileName = dic["postfilename"]
 			});
-
-			loggers[typelog].Append(new LogEvent() {
-				User = GetActor(item.Actor, typelog),
-				Date = DateTime.Parse(item.Published),
-				Action = action,
-				FileName = dic["postfilename"]
-			});
-
-			loggers[typelog].Append(new LogEvent() {
-				User = item.Id,
-				Date = DateTime.Parse(item.Published),
-				Action = action,
-				FileName = dic["postfilename"]
-			});
+			
 
 			if (item.Object != null) {
 
@@ -125,20 +112,6 @@ namespace gapi_plus {
 								User = item.Id,
 								Date = DateTime.Parse(item.Published),
 								Action = "A",
-								FileName = fnp
-							});
-
-							loggers[typelog].Append(new LogEvent() {
-								User = GetActor(item.Actor, typelog),
-								Date = DateTime.Parse(item.Published),
-								Action = "M",
-								FileName = fnp
-							});
-
-							loggers[typelog].Append(new LogEvent() {
-								User = item.Id,
-								Date = DateTime.Parse(item.Published),
-								Action = "M",
 								FileName = fnp
 							});
 						}
@@ -170,20 +143,6 @@ namespace gapi_plus {
 								Action = "A",
 								FileName = fnp
 							});
-
-							loggers[typelog].Append(new LogEvent() {
-								User = GetActor(item.Actor, typelog),
-								Date = DateTime.Parse(item.Published),
-								Action = "M",
-								FileName = fnp
-							});
-
-							loggers[typelog].Append(new LogEvent() {
-								User = item.Id,
-								Date = DateTime.Parse(item.Published),
-								Action = "M",
-								FileName = fnp
-							});
 						}
 					}
 					catch (Exception e) {
@@ -211,20 +170,6 @@ namespace gapi_plus {
 								User = item.Id,
 								Date = DateTime.Parse(item.Published),
 								Action = "A",
-								FileName = fnp
-							});
-
-							loggers[typelog].Append(new LogEvent() {
-								User = GetActor(item.Actor, typelog),
-								Date = DateTime.Parse(item.Published),
-								Action = "M",
-								FileName = fnp
-							});
-
-							loggers[typelog].Append(new LogEvent() {
-								User = item.Id,
-								Date = DateTime.Parse(item.Published),
-								Action = "M",
 								FileName = fnp
 							});
 						}

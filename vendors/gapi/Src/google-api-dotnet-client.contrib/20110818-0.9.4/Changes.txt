@@ -1,0 +1,10 @@
+Google .NET Client Library
+Changelog for the release '20110818-0.9.4'
+Thursday, August 18, 2011
+===========================================
+  651: Merged changes from branch issue_123_partial_support.
+  649: Added support for changelog-generation to the Release tool.
+  648: Made the library mono compatible and updated the Release-Builder.
+  647: Disabled the generation of optional method overloads.
+  646: Added a stub for System.Web.Mobile.dll for mono compability.
+  645: Updated APILibraries.cs to reflect the latest Contrib/ changes.

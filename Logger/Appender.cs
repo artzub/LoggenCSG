@@ -1,9 +1,7 @@
-﻿/**
- * 
- */
+﻿using System;
  
 namespace Logger {
-	public abstract class Appender {
+	public abstract class Appender : IDisposable {
 
 		protected Appender() {
 		}
@@ -16,5 +14,7 @@ namespace Logger {
 		public void Append(LogEvent logEvent) {
 			DoAppend(logEvent);
 		}
+
+		public abstract void Dispose();
 	}
 }

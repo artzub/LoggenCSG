@@ -1,0 +1,16 @@
+Google .NET Client Library
+Stable Release '20110830-0.9.7'
+Tuesday, August 30, 2011
+===========================================
+
+This is a pre-beta release. The library is still in alpha, but we should release the Beta soon.
+You should be able to use this release with all APIs in the Google Discovery.
+
+Changes:
+  668: Refactored the change for issue #130, and removed the .hg folder from the generated .zip files.
+  667: Added a workaround for the framework bug causing #130.
+  666: Added support for the "Downloads.wiki"-page in the BuildRelease tool.
+  665: Fixed style issues with the new ServiceGenerator project.
+  664: Merged changes from branch issue_113_silverlight.
+  660: Merged changes from branch issue_129_core_servicegenerator.
+

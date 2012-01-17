@@ -1,0 +1,17 @@
+Google .NET Client Library
+Stable Release '20111005-1.0.0'
+Wednesday, October 05, 2011
+===========================================
+
+Changes:
+  684: Convert LICENSE to CRLF format.
+  683: Merge Issue #139.
+  680: Merge.
+  677: Added tag 20110831-1.0.0-beta for changeset 6f391c4f6409
+  676: Release 20110831-1.0.0-beta
+  675: Merge
+  674: Removed the duplicate ServiceGenerator in Generated/Bin/ServiceGenerator/.
+  673: Updated the BuildRelease tool to include a version in the release file names.
+  672: Fixed the ServiceGenerator to work with absolute file paths under unix.
+  671: Fix missing <code></code> in XML comments
+
