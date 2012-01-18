@@ -48,6 +48,9 @@
 			this.tbFileG = new System.Windows.Forms.TextBox();
 			this.btBrowse2 = new System.Windows.Forms.Button();
 			this.nudMaxRes = new System.Windows.Forms.NumericUpDown();
+			this.apip = new System.Windows.Forms.Panel();
+			this.label1 = new System.Windows.Forms.Label();
+			this.apikey = new System.Windows.Forms.TextBox();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tabControl2.SuspendLayout();
 			this.tabPage4.SuspendLayout();
@@ -58,6 +61,7 @@
 			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.nudMaxRes)).BeginInit();
+			this.apip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// btGen
@@ -84,6 +88,7 @@
 			this.tableLayoutPanel1.Controls.Add(this.btGen, 0, 5);
 			this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 2);
 			this.tableLayoutPanel1.Controls.Add(this.nudMaxRes, 1, 1);
+			this.tableLayoutPanel1.Controls.Add(this.apip, 1, 5);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -360,6 +365,37 @@
             0,
             0});
 			// 
+			// apip
+			// 
+			this.apip.Controls.Add(this.apikey);
+			this.apip.Controls.Add(this.label1);
+			this.apip.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.apip.Location = new System.Drawing.Point(161, 143);
+			this.apip.Name = "apip";
+			this.apip.Padding = new System.Windows.Forms.Padding(3);
+			this.apip.Size = new System.Drawing.Size(497, 28);
+			this.apip.TabIndex = 7;
+			// 
+			// label1
+			// 
+			this.label1.Dock = System.Windows.Forms.DockStyle.Left;
+			this.label1.Location = new System.Drawing.Point(3, 3);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(44, 22);
+			this.label1.TabIndex = 0;
+			this.label1.Text = "APIkey:";
+			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// apikey
+			// 
+			this.apikey.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.apikey.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.apikey.Location = new System.Drawing.Point(47, 3);
+			this.apikey.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
+			this.apikey.Name = "apikey";
+			this.apikey.Size = new System.Drawing.Size(447, 23);
+			this.apikey.TabIndex = 1;
+			// 
 			// mainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -384,6 +420,8 @@
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.nudMaxRes)).EndInit();
+			this.apip.ResumeLayout(false);
+			this.apip.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -414,6 +452,9 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
 		private System.Windows.Forms.CheckBox checkBox2;
 		private System.Windows.Forms.CheckBox checkBox1;
+		private System.Windows.Forms.Panel apip;
+		private System.Windows.Forms.TextBox apikey;
+		private System.Windows.Forms.Label label1;
 	}
 }
 

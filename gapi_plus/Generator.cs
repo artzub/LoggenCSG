@@ -277,8 +277,8 @@ namespace gapi_plus {
 			var setting = insetting as GeneratorSetting;
 
 			var acts = Service.Activities.List(setting.ProfileID, setting.Collection);
-			
-			var step = setting.MaxResults / 100;
+
+			var step = setting.MaxResults / (double)100;
 			string nextPage = string.Empty;
 
 			if (loggers == null)

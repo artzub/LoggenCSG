@@ -124,9 +124,16 @@ namespace gapi_plus {
 
 		private void btGen_Click(object sender, EventArgs e) {
 
+			if (string.IsNullOrWhiteSpace(apikey.Text)) {
+				new Exception("Укажите ваш API key").ShowError(this);
+				return;
+			}
+
 			using (var sc = new StateControl()) {
 				sc.Dock = DockStyle.Fill;
+				tableLayoutPanel1.Controls.Remove(apip);
 				tableLayoutPanel1.Controls.Add(sc, 1, 5);
+
 				btGen.Enabled = false;
 				try {
 
@@ -136,7 +143,7 @@ namespace gapi_plus {
 					if (tbFileG.Enabled && File.Exists(tbFileG.Text))
 						File.Delete(tbFileG.Text);
 					//UD
-					(new RGenerator("AIzaSyCqVDlXyRu1I1HhUvvPjc_q2038gFSnb6U", sc)).Run(new GeneratorSetting() {
+					(new Generator(apikey.Text, sc)).Run(new GeneratorSetting() {
 						ProfileID = tbID.Text,
 						Rules = rules,
 						VisLogs = Visualizers.Code_swarm | Visualizers.Gource,
@@ -153,6 +160,8 @@ namespace gapi_plus {
 				}
 				finally {
 					btGen.Enabled = true;
+					tableLayoutPanel1.Controls.Remove(sc);
+					tableLayoutPanel1.Controls.Add(apip, 1, 5);
 				}
 			}
 		}
