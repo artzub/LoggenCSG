@@ -46,7 +46,8 @@ namespace gapi_plus {
 
 			rules = new Dictionary<Visualizers.Types, Dictionary<Rules, string>>() {
 				{Visualizers.Code_swarm, new Dictionary<Rules,string>()},
-			    {Visualizers.Gource, new Dictionary<Rules, string>()}
+			    {Visualizers.Gource, new Dictionary<Rules, string>()},
+				{Visualizers.Logstalgia, new Dictionary<Rules, string>()}
 			};
 
 			var rule = rules[Visualizers.Code_swarm];
@@ -66,6 +67,15 @@ namespace gapi_plus {
 			rule[Rules.Comment] = "sharepath/postid/types/id.type";
 			rule[Rules.Plus] = "sharepath/postid/types/id.type";
 			rule[Rules.Reshare] = "sharepath/postid/types/id.type";
+
+			rule = rules[Visualizers.Logstalgia];
+			rule[Rules.SharePath] = "/";
+			rule[Rules.ShareName] = "actorname_title.type";
+			rule[Rules.NotShare] = "/";
+			rule[Rules.Post] = "sharepath/actorname_title.type";
+			rule[Rules.Comment] = "sharepath/actorname_title.type";
+			rule[Rules.Plus] = "sharepath/actorname_postid.type";
+			rule[Rules.Reshare] = "sharepath/actorname_postid.type";
 
 			fillData();
 		}
@@ -137,23 +147,40 @@ namespace gapi_plus {
 				btGen.Enabled = false;
 				try {
 
-					if (tbFileCS.Enabled && File.Exists(tbFileCS.Text))
-						File.Delete(tbFileCS.Text);
+					Visualizers.Types flags = Visualizers.Types.None;
 
-					if (tbFileG.Enabled && File.Exists(tbFileG.Text))
-						File.Delete(tbFileG.Text);
+					if (panel1.Enabled) {
+						flags = flags | Visualizers.Code_swarm;
+						if(File.Exists(tbFileCS.Text)) 
+							File.Delete(tbFileCS.Text);
+					}
+
+					if (panel2.Enabled) {
+						flags = flags | Visualizers.Gource;
+						if(File.Exists(tbFileG.Text)) 						
+							File.Delete(tbFileG.Text);
+					}
+
+					if (panel3.Enabled) {
+						flags = flags | Visualizers.Logstalgia;
+						if(File.Exists(tbFileL.Text))
+							File.Delete(tbFileL.Text);
+					}
+
 					//UD
-					(new Generator(apikey.Text, sc)).Run(new GeneratorSetting() {
+					(new RGenerator(apikey.Text, sc)).Run(new GeneratorSetting() {
 						ProfileID = tbID.Text,
 						Rules = rules,
-						VisLogs = Visualizers.Code_swarm | Visualizers.Gource,
+						VisLogs = (Visualizers.Types) flags,
 						LogFiles = new Dictionary<Visualizers.Types, string> {
 							{Visualizers.Code_swarm, tbFileCS.Text},
-							{Visualizers.Gource, tbFileG.Text}
+							{Visualizers.Gource, tbFileG.Text},
+							{Visualizers.Logstalgia, tbFileL.Text}
 						},
 						Methods = new Dictionary<Visualizers.Types, GeneratorLogsMeth> {
 							{Visualizers.Code_swarm, UDGenerator.LogGen},
-							{Visualizers.Gource, Generator.LogGen}
+							{Visualizers.Gource, Generator.LogGen},
+							{Visualizers.Logstalgia, Generator.LogGen}
 						},
 						MaxResults = Convert.ToInt32(nudMaxRes.Value)
 					});
@@ -167,16 +194,21 @@ namespace gapi_plus {
 		}
 
 		private void CheckEnabledGen() {
-			btGen.Enabled = checkBox1.Checked | checkBox2.Checked;
+			btGen.Enabled = checkBox1.Checked | checkBox2.Checked | checkBox3.Checked;
 		}
 
 		private void checkBox1_CheckedChanged(object sender, EventArgs e) {
-			btBrowse1.Enabled = tbFileCS.Enabled = checkBox1.Checked;
+			panel1.Enabled = checkBox1.Checked;
 			CheckEnabledGen();
 		}
 
 		private void checkBox2_CheckedChanged(object sender, EventArgs e) {
-			btBrowse2.Enabled = tbFileG.Enabled = checkBox2.Checked;
+			panel2.Enabled = checkBox2.Checked;
+			CheckEnabledGen();
+		}
+
+		private void checkBox3_CheckedChanged(object sender, EventArgs e) {
+			panel3.Enabled = checkBox3.Checked;
 			CheckEnabledGen();
 		}
 	}

@@ -69,6 +69,8 @@ namespace gapi_plus {
 
 			var action = "A";
 
+			var logEvent = Visualizers.TypeLogEvent[typelog].Invoke(Type.EmptyTypes) as LogEvent;;
+
 			if (item.Verb == "share" && 
 				item.Object != null && 
 				item.Object.Actor != null) {
@@ -78,6 +80,7 @@ namespace gapi_plus {
 					.Replace("type", item.Verb)
 					.Replace("postid", item.Id)
 					.Replace("id", item.Object.Id)
+					.Replace("actorname", item.Object.Actor.DisplayName)
 					.Replace("actor", item.Object.Actor.Id)							
 					.Replace("date", DateString(item.Published, typelog))
 					.Replace("//", "/")
@@ -88,17 +91,22 @@ namespace gapi_plus {
 					.Replace("type", item.Verb)
 					.Replace("postid", item.Id)
 					.Replace("id", item.Object.Id)
+					.Replace("actorname", item.Object.Actor.DisplayName)
 					.Replace("actor", item.Object.Actor.Id)							
 					.Replace("date", DateString(item.Published, typelog))
+					.Replace("title", item.Object != null ? 
+						ReplaceForLog(item.Title.Substring(0, item.Title.Length > 20 ? 20 : item.Title.Length)) : item.Id)
 					.Replace("//", "/")
 					;
 
-				loggers[typelog].Append(new LogEvent() {
-					User = GetActor(item.Object.Actor, typelog),
-					Date = DateTime.Parse(item.Published),
-					Action = action,
-					FileName = dic["postfilename"]
-				});
+				logEvent.User = GetActor(item.Object.Actor, typelog);
+				logEvent.Date = DateTime.Parse(item.Published);
+				logEvent.Action = typelog == Visualizers.Types.Logstalgia ? "share" : action;
+				logEvent.FileName = dic["postfilename"];
+				if (typelog == Visualizers.Types.Logstalgia)
+					(logEvent as LogstalgiaEvent).Size = item.Object != null ? item.Object.Content.Length.ToString() : "200";
+
+				loggers[typelog].Append(logEvent);
 
 				action = "M";
 			}
@@ -107,6 +115,7 @@ namespace gapi_plus {
 				dic["sharepath"] = dic["sharepath"]
 					.Replace("type", item.Verb)
 					.Replace("id", item.Id)
+					.Replace("actorname", item.Actor.DisplayName)
 					.Replace("actor", item.Actor.Id)
 					.Replace("date", DateString(item.Published, typelog))
 					.Replace("//", "/")
@@ -117,23 +126,27 @@ namespace gapi_plus {
 			dic["postfilename"] = dic["postfilename"]
 				.Replace("type", item.Verb)
 				.Replace("id", item.Id)
-				.Replace("actor", item.Actor.Id)
+				.Replace("actorname", item.Actor.DisplayName)
+				.Replace("actor", item.Actor.Id)				
 				.Replace("date", DateString(item.Published, typelog))
 				.Replace("sharepath", dic["sharepath"])
+				.Replace("title", !string.IsNullOrWhiteSpace(item.Title) ? 
+					ReplaceForLog(item.Title.Substring(0, item.Title.Length > 20 ? 20 : item.Title.Length)) : item.Id)
 				.Replace("//", "/")
 				;
 
+			logEvent.User = GetActor(item.Actor, typelog);
+			logEvent.Date = DateTime.Parse(item.Published);
+			logEvent.Action = typelog == Visualizers.Types.Logstalgia ? "post" : action;
+			logEvent.FileName = dic["postfilename"];
+			if (typelog == Visualizers.Types.Logstalgia)
+				(logEvent as LogstalgiaEvent).Size = item.Object != null ? item.Object.Content.Length.ToString() : "100";
 
-			loggers[typelog].Append(new LogEvent() {
-				User = GetActor(item.Actor, typelog),
-				Date = DateTime.Parse(item.Published),
-				Action = action,
-				FileName = dic["postfilename"]
-			});
+			loggers[typelog].Append(logEvent);
 
 			if (item.Object != null) {
 
-				if (item.Object.Resharers.TotalItems > 0) {
+				if (item.Object.Replies.TotalItems > 0) {
 					try {
 						var listpl = dicitem.Value.Comments;
 						foreach (var pl in listpl) {
@@ -142,35 +155,36 @@ namespace gapi_plus {
 								.Replace("type", "comment")
 										
 								.Replace("postid", item.Id)
+								.Replace("id", pl.Id)
+								.Replace("postactorname", item.Actor.DisplayName)
 								.Replace("postactor", item.Actor.Id)
 								.Replace("postdate", DateString(item.Published, typelog))
-
-								.Replace("id", pl.Id)
+								
+								.Replace("actorname", pl.Actor.DisplayName)
 								.Replace("actor", pl.Actor.Id)
 								.Replace("date", DateString(pl.Published, typelog))										
 								.Replace("sharepath", dic["sharepath"])
 								.Replace("postfilename", dic["postfilename"])
+								.Replace("title", pl.Object != null ? 
+									ReplaceForLog(pl.Object.Content.Substring(0, pl.Object.Content.Length > 20 ? 20 : pl.Object.Content.Length)) : item.Actor.DisplayName)
 								.Replace("//", "/")
 								;
 
-							loggers[typelog].Append(new LogEvent() {
-								User = GetActor(pl.Actor, typelog),
-								Date = DateTime.Parse(item.Published),
-								Action = "A",
-								FileName = fnp
-							});
+							logEvent.User = GetActor(pl.Actor, typelog);
+							logEvent.Date = DateTime.Parse(pl.Published);
+							logEvent.Action = typelog == Visualizers.Types.Logstalgia ? "comment" : "A";
+							logEvent.FileName = fnp;
+							if (typelog == Visualizers.Types.Logstalgia)
+								(logEvent as LogstalgiaEvent).Size = pl.Object != null ? pl.Object.Content.Length.ToString() : "1";
 
-							loggers[typelog].Append(new LogEvent() {
-								User = GetActor(item.Actor, typelog),
-								Date = DateTime.Parse(item.Published),
-								Action = "M",
-								FileName = fnp
-							});
+							loggers[typelog].Append(logEvent);
 						}
 					}
 					catch (Exception e) {
 					}
 				}
+
+				long ticks = 0;
 
 				if (item.Object.Plusoners.TotalItems > 0) {
 					try {
@@ -181,7 +195,9 @@ namespace gapi_plus {
 							fnp = fnp
 								.Replace("type", "plus")
 								.Replace("postid", item.Id)
-								.Replace("id", pl.Id)										
+								.Replace("id", pl.Id)
+								.Replace("actorname", pl.DisplayName)								
+								.Replace("postactorname", item.Actor.DisplayName)
 								.Replace("postactor", item.Actor.Id)
 								.Replace("postdate", DateString(item.Published, typelog))
 								.Replace("sharepath", dic["sharepath"])
@@ -189,24 +205,23 @@ namespace gapi_plus {
 								.Replace("//", "/")
 								;
 
-							loggers[typelog].Append(new LogEvent() {
-								User = GetActor(pl, typelog),
-								Date = DateTime.Parse(item.Published),
-								Action = "A",
-								FileName = fnp
-							});
+							logEvent.User = GetActor(pl, typelog);
+							logEvent.Date = DateTime.Parse(item.Published).AddTicks(ticks);
+							logEvent.Action = typelog == Visualizers.Types.Logstalgia ? "plus" : "A";
+							logEvent.FileName = fnp;
+							if (typelog == Visualizers.Types.Logstalgia)
+								(logEvent as LogstalgiaEvent).Size = "5";
 
-							loggers[typelog].Append(new LogEvent() {
-								User = GetActor(item.Actor, typelog),
-								Date = DateTime.Parse(item.Published),
-								Action = "M",
-								FileName = fnp
-							});
+							loggers[typelog].Append(logEvent);
+
+							ticks += 10000;
 						}
 					}
 					catch (Exception e) {
 					}
 				}
+
+				ticks = 0;
 
 				if (item.Object.Resharers.TotalItems > 0) {
 					try {
@@ -217,7 +232,9 @@ namespace gapi_plus {
 							fnp = fnp
 								.Replace("type", "reshare")
 								.Replace("postid", item.Id)
-								.Replace("id", pl.Id)										
+								.Replace("id", pl.Id)
+								.Replace("actorname", pl.DisplayName)								
+								.Replace("postactorname", item.Actor.DisplayName)						
 								.Replace("postactor", item.Actor.Id)
 								.Replace("postdate", DateString(item.Published, typelog))
 								.Replace("sharepath", dic["sharepath"])
@@ -225,25 +242,31 @@ namespace gapi_plus {
 								.Replace("//", "/")
 								;
 
-							loggers[typelog].Append(new LogEvent() {
-								User = GetActor(pl, typelog),
-								Date = DateTime.Parse(item.Published),
-								Action = "A",
-								FileName = fnp
-							});
+							logEvent.User = GetActor(pl, typelog);
+							logEvent.Date = DateTime.Parse(item.Published).AddTicks(ticks);
+							logEvent.Action = typelog == Visualizers.Types.Logstalgia ? "reshare" : "A";
+							logEvent.FileName = fnp;
+							if (typelog == Visualizers.Types.Logstalgia)
+								(logEvent as LogstalgiaEvent).Size = "5";
 
-							loggers[typelog].Append(new LogEvent() {
-								User = GetActor(item.Actor, typelog),
-								Date = DateTime.Parse(item.Published),
-								Action = "M",
-								FileName = fnp
-							});
+							loggers[typelog].Append(logEvent);
+
+							ticks += 10000;
 						}
 					}
 					catch (Exception e) {
 					}
 				}
 			}
+		}
+
+		private static string ReplaceForLog(string p) {
+			return p.Replace(" ", "_")
+					.Replace("\n", "")
+					.Replace("\r", "")
+					.Replace("!", "")
+					.Replace("©", "")
+					.Replace("►", "");
 		}
 
 		protected virtual void GenerateLogs(Dictionary<Activity, ActivityCont> data, GeneratorSetting setting, Dictionary<Visualizers.Types, Appender> loggers) {
@@ -255,12 +278,12 @@ namespace gapi_plus {
 				Stater.SetState("Generate logs ...", 0);
 			}
 
-			foreach (var log in setting.LogFiles) {
-				var rules = setting.Rules[log.Key];
+			foreach (var log in loggers.Keys) {
+				var rules = setting.Rules[log];
 
 				foreach (var dicitem in data) {
 
-					setting.Methods[log.Key](loggers, log.Key, rules, dicitem);
+					setting.Methods[log](loggers, log, rules, dicitem);
 
 					//LogGen(loggers, log.Key, rules, dicitem);
 
@@ -284,7 +307,7 @@ namespace gapi_plus {
 			if (loggers == null)
 				loggers = new Dictionary<Visualizers.Types, Appender>();
 			foreach (var log in setting.LogFiles) {
-				if (!loggers.ContainsKey(log.Key) || loggers[log.Key] == null)
+				if (setting.VisLogs.HasFlag(log.Key) && (!loggers.ContainsKey(log.Key) || loggers[log.Key] == null))
 					loggers[log.Key] = Visualizers.Loggers[log.Key].Invoke(new object[] { log.Value }) as Appender;
 			}
 			
@@ -331,7 +354,7 @@ namespace gapi_plus {
 
 							if (item.Object != null) {
 
-								if (item.Object.Resharers.TotalItems > 0) {
+								if (item.Object.Replies.TotalItems > 0) {
 									var plser = Service.Comments.List(item.Id);
 									plser.MaxResults = 100;
 									try {
