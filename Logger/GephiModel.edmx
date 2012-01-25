@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="gephiModel.Store" Alias="Self" Provider="System.Data.SQLite" ProviderManifestToken="ISO8601" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="gephiModelStoreContainer">
+          <EntitySet Name="Edge" EntityType="gephiModel.Store.Edge" store:Type="Tables" />
+          <EntitySet Name="Node" EntityType="gephiModel.Store.Node" store:Type="Tables" />
+          <AssociationSet Name="FK_Edge_0" Association="gephiModel.Store.FK_Edge_0">
+            <End Role="Node" EntitySet="Node" />
+            <End Role="Edge" EntitySet="Edge" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Edge_1" Association="gephiModel.Store.FK_Edge_1">
+            <End Role="Node" EntitySet="Node" />
+            <End Role="Edge" EntitySet="Edge" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Edge">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Source" Type="integer" Nullable="false" />
+          <Property Name="Target" Type="integer" Nullable="false" />
+          <Property Name="Size" Type="integer" />
+          <Property Name="Start" Type="datetime" />
+          <Property Name="End" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Node">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="nvarchar" Nullable="false" />
+          <Property Name="Size" Type="integer" />
+          <Property Name="Start" Type="datetime" />
+          <Property Name="End" Type="datetime" />
+          <Property Name="X" Type="integer" />
+          <Property Name="Y" Type="integer" />
+        </EntityType>
+        <Association Name="FK_Edge_0">
+          <End Role="Node" Type="gephiModel.Store.Node" Multiplicity="1" />
+          <End Role="Edge" Type="gephiModel.Store.Edge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Edge">
+              <PropertyRef Name="Target" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Edge_1">
+          <End Role="Node" Type="gephiModel.Store.Node" Multiplicity="1" />
+          <End Role="Edge" Type="gephiModel.Store.Edge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Edge">
+              <PropertyRef Name="Source" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="gephiModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="gephiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Edges" EntityType="gephiModel.Edge" />
+          <EntitySet Name="Nodes" EntityType="gephiModel.Node" />
+          <AssociationSet Name="FK_Edge_0" Association="gephiModel.FK_Edge_0">
+            <End Role="Node" EntitySet="Nodes" />
+            <End Role="Edge" EntitySet="Edges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Edge_1" Association="gephiModel.FK_Edge_1">
+            <End Role="Node" EntitySet="Nodes" />
+            <End Role="Edge" EntitySet="Edges" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Edge">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Source" Type="Int64" Nullable="false" />
+          <Property Name="Target" Type="Int64" Nullable="false" />
+          <Property Name="Size" Type="Int64" />
+          <Property Name="Start" Type="DateTime" />
+          <Property Name="End" Type="DateTime" />
+          <NavigationProperty Name="NodeSource" Relationship="gephiModel.FK_Edge_0" FromRole="Edge" ToRole="Node" />
+          <NavigationProperty Name="NodeTarget" Relationship="gephiModel.FK_Edge_1" FromRole="Edge" ToRole="Node" />
+        </EntityType>
+        <EntityType Name="Node">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="Size" Type="Int64" />
+          <Property Name="Start" Type="DateTime" />
+          <Property Name="End" Type="DateTime" />
+          <Property Name="X" Type="Int64" />
+          <Property Name="Y" Type="Int64" />
+          <NavigationProperty Name="SourceEdges" Relationship="gephiModel.FK_Edge_0" FromRole="Node" ToRole="Edge" />
+          <NavigationProperty Name="TargetEdges" Relationship="gephiModel.FK_Edge_1" FromRole="Node" ToRole="Edge" />
+        </EntityType>
+        <Association Name="FK_Edge_0">
+          <End Role="Node" Type="gephiModel.Node" Multiplicity="1" />
+          <End Role="Edge" Type="gephiModel.Edge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Edge">
+              <PropertyRef Name="Target" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Edge_1">
+          <End Role="Node" Type="gephiModel.Node" Multiplicity="1" />
+          <End Role="Edge" Type="gephiModel.Edge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Edge">
+              <PropertyRef Name="Source" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="gephiModelStoreContainer" CdmEntityContainer="gephiEntities">
+          <EntitySetMapping Name="Edges"><EntityTypeMapping TypeName="gephiModel.Edge"><MappingFragment StoreEntitySet="Edge">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Source" ColumnName="Source" />
+            <ScalarProperty Name="Target" ColumnName="Target" />
+            <ScalarProperty Name="Size" ColumnName="Size" />
+            <ScalarProperty Name="Start" ColumnName="Start" />
+            <ScalarProperty Name="End" ColumnName="End" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Nodes"><EntityTypeMapping TypeName="gephiModel.Node"><MappingFragment StoreEntitySet="Node">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Label" ColumnName="Label" />
+            <ScalarProperty Name="Size" ColumnName="Size" />
+            <ScalarProperty Name="Start" ColumnName="Start" />
+            <ScalarProperty Name="End" ColumnName="End" />
+            <ScalarProperty Name="X" ColumnName="X" />
+            <ScalarProperty Name="Y" ColumnName="Y" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="GephiModel">
+        <EntityTypeShape EntityType="gephiModel.Edge" Width="1.5" PointX="3" PointY="1" Height="2.2496956380208335" IsExpanded="true" />
+        <EntityTypeShape EntityType="gephiModel.Node" Width="1.5" PointX="0.75" PointY="1" Height="2.4140429687499996" IsExpanded="true" />
+        <AssociationConnector Association="gephiModel.FK_Edge_0" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="2.1248478190104167" />
+          <ConnectorPoint PointX="3" PointY="2.1248478190104167" />
+        </AssociationConnector>
+        <AssociationConnector Association="gephiModel.FK_Edge_1" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="1.4999239095052084" />
+          <ConnectorPoint PointX="3" PointY="1.4999239095052084" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

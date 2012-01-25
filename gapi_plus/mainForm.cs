@@ -47,35 +47,45 @@ namespace gapi_plus {
 			rules = new Dictionary<Visualizers.Types, Dictionary<Rules, string>>() {
 				{Visualizers.Code_swarm, new Dictionary<Rules,string>()},
 			    {Visualizers.Gource, new Dictionary<Rules, string>()},
-				{Visualizers.Logstalgia, new Dictionary<Rules, string>()}
+				{Visualizers.Logstalgia, new Dictionary<Rules, string>()},
+				{Visualizers.Gephi, new Dictionary<Rules, string>()}
 			};
 
 			var rule = rules[Visualizers.Code_swarm];
-			rule[Rules.SharePath] = "/type/";
-			rule[Rules.ShareName] = "actor.type";
-			rule[Rules.NotShare] = "/type/";
-			rule[Rules.Post] = "sharepath/actor.type";
-			rule[Rules.Comment] = "sharepath/actor.type";
-			rule[Rules.Plus] = "sharepath/id.type";
-			rule[Rules.Reshare] = "sharepath/id.type";
+			rule[Rules.SharePath] = "/";
+			rule[Rules.ShareName] = "{actor}.{type}";
+			rule[Rules.NotShare] = "/";
+			rule[Rules.Post] = "{sharepath}/{actor}.{type}";
+			rule[Rules.Comment] = "{sharepath}/{actor}.{type}";
+			rule[Rules.Plus] = "{sharepath}/{id}.{type}";
+			rule[Rules.Reshare] = "{sharepath}/{id}.{type}";
 
 			rule = rules[Visualizers.Gource];
-			rule[Rules.SharePath] = "/type/actor/id/";
-			rule[Rules.ShareName] = "id.type";
-			rule[Rules.NotShare] = "/type";
-			rule[Rules.Post] = "sharepath/id/id.type";
-			rule[Rules.Comment] = "sharepath/postid/types/id.type";
-			rule[Rules.Plus] = "sharepath/postid/types/id.type";
-			rule[Rules.Reshare] = "sharepath/postid/types/id.type";
+			rule[Rules.SharePath] = "/{date}/{actor}/{type}/{id}/";
+			rule[Rules.ShareName] = "{id}.{type}";
+			rule[Rules.NotShare] = "/{date}/{actor}/{type}/{id}/";
+			rule[Rules.Post] = "{sharepath}/{id}.{type}";
+			rule[Rules.Comment] = "{sharepath}/{type}s/{date}/{id}.{type}";
+			rule[Rules.Plus] = "{sharepath}/{type}s/{date}/{id}.{type}";
+			rule[Rules.Reshare] = "{sharepath}/{type}s/{date}/{id}.{type}";
 
 			rule = rules[Visualizers.Logstalgia];
 			rule[Rules.SharePath] = "/";
-			rule[Rules.ShareName] = "actorname_title.type";
+			rule[Rules.ShareName] = "{actorname}_{title}.{type}";
 			rule[Rules.NotShare] = "/";
-			rule[Rules.Post] = "sharepath/actorname_title.type";
-			rule[Rules.Comment] = "sharepath/actorname_title.type";
-			rule[Rules.Plus] = "sharepath/actorname_postid.type";
-			rule[Rules.Reshare] = "sharepath/actorname_postid.type";
+			rule[Rules.Post] = "{sharepath}/{actorname}_{title}.{type}";
+			rule[Rules.Comment] = "{sharepath}/{actorname}_{title}.{type}";
+			rule[Rules.Plus] = "{sharepath}/{actorname}_{postid}.{type}";
+			rule[Rules.Reshare] = "{sharepath}/{actorname}_{postid}.{type}";
+
+			rule = rules[Visualizers.Gephi];
+			rule[Rules.SharePath] = "";
+			rule[Rules.ShareName] = "{type}:{title}";
+			rule[Rules.NotShare] = "";
+			rule[Rules.Post] = "{type}:{title}";
+			rule[Rules.Comment] = "{type}:{title}";
+			rule[Rules.Plus] = "{type}:{posttitle}";
+			rule[Rules.Reshare] = "{type}:{posttitle}";
 
 			fillData();
 		}
@@ -86,8 +96,26 @@ namespace gapi_plus {
 			dgRules.Columns.Clear();
 			dgRules.Columns[dgRules.Columns.Add("rulesCol", "Rules")].ReadOnly = true;
 
-			foreach (var name in Visualizers.Names) {
+			var needNames = new Dictionary<Visualizers.Types, string>() {
+				{Visualizers.Code_swarm, @"C:\actions.xml"},
+				{Visualizers.Gource, @"C:\actions.log"},
+				{Visualizers.Logstalgia, @"C:\actlogs.log"},
+				{Visualizers.Gephi, @"C:\gephidata.db"}
+			};
+
+			foreach (var key in rules.Keys) {
+				var name = Visualizers.GetName(key);
 				dgRules.Columns.Add(name + "Col", name);
+
+				var control = new OutFilePanel() {
+					Title = name,
+					FileName = needNames[key],
+					Checked = true,
+					Dock = DockStyle.Top,
+					Tag = key
+				};
+				control.CheckedChanged += new System.EventHandler(cb_CheckedChanged);
+				groupBox1.Controls.Add(control);
 			}
 
 			foreach (var item in rulesName) {
@@ -133,7 +161,6 @@ namespace gapi_plus {
 		}
 
 		private void btGen_Click(object sender, EventArgs e) {
-
 			if (string.IsNullOrWhiteSpace(apikey.Text)) {
 				new Exception("Укажите ваш API key").ShowError(this);
 				return;
@@ -142,73 +169,63 @@ namespace gapi_plus {
 			using (var sc = new StateControl()) {
 				sc.Dock = DockStyle.Fill;
 				tableLayoutPanel1.Controls.Remove(apip);
-				tableLayoutPanel1.Controls.Add(sc, 1, 5);
+				tableLayoutPanel1.Controls.Add(sc, 1, 3);
 
 				btGen.Enabled = false;
 				try {
 
 					Visualizers.Types flags = Visualizers.Types.None;
 
-					if (panel1.Enabled) {
-						flags = flags | Visualizers.Code_swarm;
-						if(File.Exists(tbFileCS.Text)) 
-							File.Delete(tbFileCS.Text);
+					var filenames = new Dictionary<Visualizers.Types, string>();
+
+					var controls = groupBox1.Controls.OfType<OutFilePanel>().Where(x => x.Checked);
+
+					foreach (var cont in controls) {
+						if (cont.Tag is Visualizers.Types) {
+							var key = (Visualizers.Types)cont.Tag;
+
+							if (cont.Checked) {
+								flags = flags | key;
+								filenames[key] = cont.FileName;
+							}
+						}
 					}
 
-					if (panel2.Enabled) {
-						flags = flags | Visualizers.Gource;
-						if(File.Exists(tbFileG.Text)) 						
-							File.Delete(tbFileG.Text);
-					}
-
-					if (panel3.Enabled) {
-						flags = flags | Visualizers.Logstalgia;
-						if(File.Exists(tbFileL.Text))
-							File.Delete(tbFileL.Text);
-					}
+					if (filenames.Count < 1)
+						return;
 
 					//UD
 					(new RGenerator(apikey.Text, sc)).Run(new GeneratorSetting() {
-						ProfileID = tbID.Text,
+						ProfileID = /*"101113754039426612780"*/tbID.Text,
 						Rules = rules,
 						VisLogs = (Visualizers.Types) flags,
-						LogFiles = new Dictionary<Visualizers.Types, string> {
-							{Visualizers.Code_swarm, tbFileCS.Text},
-							{Visualizers.Gource, tbFileG.Text},
-							{Visualizers.Logstalgia, tbFileL.Text}
-						},
+						LogFiles = filenames,
 						Methods = new Dictionary<Visualizers.Types, GeneratorLogsMeth> {
+							//UD
 							{Visualizers.Code_swarm, UDGenerator.LogGen},
 							{Visualizers.Gource, Generator.LogGen},
-							{Visualizers.Logstalgia, Generator.LogGen}
+							{Visualizers.Logstalgia, Generator.LogGen},
+							{Visualizers.Gephi, Generator.LogGen},
 						},
-						MaxResults = Convert.ToInt32(nudMaxRes.Value)
+						MaxResults = Convert.ToInt32(nudMaxRes.Value),
+						MaxComments = 20,
+						MaxPluses = 20,
+						MaxReshares = 20
 					});
 				}
 				finally {
 					btGen.Enabled = true;
 					tableLayoutPanel1.Controls.Remove(sc);
-					tableLayoutPanel1.Controls.Add(apip, 1, 5);
+					tableLayoutPanel1.Controls.Add(apip, 1, 3);
 				}
 			}
 		}
 
 		private void CheckEnabledGen() {
-			btGen.Enabled = checkBox1.Checked | checkBox2.Checked | checkBox3.Checked;
+			btGen.Enabled = groupBox1.Controls.OfType<OutFilePanel>().Count(x => (x as OutFilePanel).Checked) > 0;
 		}
 
-		private void checkBox1_CheckedChanged(object sender, EventArgs e) {
-			panel1.Enabled = checkBox1.Checked;
-			CheckEnabledGen();
-		}
-
-		private void checkBox2_CheckedChanged(object sender, EventArgs e) {
-			panel2.Enabled = checkBox2.Checked;
-			CheckEnabledGen();
-		}
-
-		private void checkBox3_CheckedChanged(object sender, EventArgs e) {
-			panel3.Enabled = checkBox3.Checked;
+		private void cb_CheckedChanged(object sender, EventArgs e) {
 			CheckEnabledGen();
 		}
 	}

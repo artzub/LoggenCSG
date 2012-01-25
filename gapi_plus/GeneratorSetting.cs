@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using Core;
 
 namespace gapi_plus {
@@ -38,20 +39,36 @@ namespace gapi_plus {
 			set;
 		}
 
+		public int MaxComments {
+			get;
+			set;
+		}
+
+		public int MaxPluses {
+			get;
+			set;
+		}
+
+		public int MaxReshares {
+			get;
+			set;
+		}
+
 		public GeneratorSetting() {
 			Collection = Google.Apis.Plus.v1.ActivitiesResource.Collection.Public;
 		}
 
 		public GeneratorSetting Clone() {
-			return new GeneratorSetting() {
-				VisLogs = this.VisLogs,
-				LogFiles = this.LogFiles,
-				Methods = this.Methods,
-				Rules = this.Rules,
-				ProfileID = this.ProfileID,
-				Collection = this.Collection,
-				MaxResults = this.MaxResults
-			};
+
+			var item = new GeneratorSetting();
+
+			var arr = this.GetType().GetProperties().ToArray();
+
+			foreach (var prop in arr) {
+				prop.SetValue(item, prop.GetValue(this, null), null);
+			}
+
+			return item;
 		}
 	}
 }

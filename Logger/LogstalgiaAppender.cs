@@ -25,11 +25,4 @@ namespace Logger {
 			);
 		}
 	}
-
-	public class LogstalgiaEvent : LogEvent {
-		public string Size {
-			get;
-			set;
-		}
-	}
 }

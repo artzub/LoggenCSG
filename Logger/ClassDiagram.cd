@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Logger.Appender" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAIAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Appender.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Logger.CodeSwarmAppender" Collapsed="true">
+    <Position X="3" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAgAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>CodeSwarmAppender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logger.FileAppender" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAADAAAAAgAEAAAAAAIAAAAIAAAAAgAAVAAAA=</HashCode>
+      <FileName>FileAppender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logger.GourceAppender" Collapsed="true">
+    <Position X="0.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GourceAppender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logger.LogEvent" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAABAAAQ=</HashCode>
+      <FileName>LogEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logger.LogstalgiaAppender" Collapsed="true">
+    <Position X="5.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LogstalgiaAppender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logger.SQLiteAppender" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAqAAAAAAAAAAAAAAIAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>SQLiteAppender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logger.GephiAppender" Collapsed="true">
+    <Position X="7.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQIAAAAAAIAAAAgAAAAAAAAAAAAAAAAAAABAAAACAAA=</HashCode>
+      <FileName>GephiAppender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logger.LogstalgiaEvent">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LogstalgiaEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logger.GephiLogEvent">
+    <Position X="0.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GephiLogEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

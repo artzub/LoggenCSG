@@ -28,7 +28,10 @@ namespace gapi_plus {
 
 			loggers = new Dictionary<Visualizers.Types, Appender>();
 			foreach (var log in setting.LogFiles)
-				loggers[log.Key] = Visualizers.Loggers[log.Key].Invoke(new object[] { log.Value }) as Appender;			
+				if (setting.VisLogs.HasFlag(log.Key) && (!loggers.ContainsKey(log.Key) || loggers[log.Key] == null))
+					loggers[log.Key] = Visualizers.Loggers[log.Key]
+						.GetConstructor(new Type[] { typeof(string) })
+							.Invoke(new object[] { log.Value }) as Appender;			
 
 			while (step != 0) {
 
@@ -71,22 +74,28 @@ namespace gapi_plus {
 
 							var ditem = dicdate[item] = new ActivityCont();
 
-							if (item.Verb == "share" && 
-								item.Object != null && 
-								item.Object.Actor != null) {
-								if (!users.ContainsKey(item.Object.Actor.Id)) {
-									users[item.Object.Actor.Id] = true;
-									var sset = setting.Clone();
-									sset.ProfileID = item.Object.Actor.Id;
-									base.GenerateLog(sset);
-								}
-							}
-
 							if (item.Object != null) {
 
-								if (item.Object.Resharers.TotalItems > 0) {
+								if (item.Verb == "share" && 
+									!string.IsNullOrWhiteSpace(item.Object.Id)) {
+									try {
+										ditem.Share = Service.Activities.Get(item.Object.Id).Fetch();
+										if (item.Object.Actor != null &&
+											!string.IsNullOrWhiteSpace(item.Object.Actor.Id) &&
+											!users.ContainsKey(item.Object.Actor.Id)) {
+											users[item.Object.Actor.Id] = true;
+											var sset = setting.Clone();
+											sset.ProfileID = item.Object.Actor.Id;
+											base.GenerateLog(sset);
+										}
+									}
+									catch (Exception e) {
+									}
+								}
+
+								if (item.Object.Replies.TotalItems > 0) {
 									var plser = Service.Comments.List(item.Id);
-									plser.MaxResults = 100;
+									plser.MaxResults = setting.MaxComments;
 									try {
 										var listpl = plser.Fetch();
 
@@ -107,7 +116,7 @@ namespace gapi_plus {
 
 								if (item.Object.Plusoners.TotalItems > 0) {
 									var plser = Service.People.ListByActivity(item.Id, PeopleResource.Collection.Plusoners);
-									plser.MaxResults = 100;
+									plser.MaxResults = setting.MaxPluses;
 
 									try {
 										var listpl = plser.Fetch();
@@ -128,7 +137,7 @@ namespace gapi_plus {
 
 								if (item.Object.Resharers.TotalItems > 0) {
 									var plser = Service.People.ListByActivity(item.Id, PeopleResource.Collection.Resharers);
-									plser.MaxResults = 100;
+									plser.MaxResults = setting.MaxReshares;
 
 									try {
 										var listpl = plser.Fetch();

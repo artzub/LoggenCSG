@@ -10,7 +10,8 @@ namespace Core {
 			None = 0,
 			Code_swarm = 1,
 			Gource = 2,
-			Logstalgia = 4
+			Logstalgia = 4,
+			Gephi = 7
 		}
 
 		public static Types Gource {
@@ -31,6 +32,12 @@ namespace Core {
 			}
 		}
 
+		public static Types Gephi {
+			get {
+				return Types.Gephi;
+			}
+		}
+
 		public static string[] Names {
 			get {
 				return Enum.GetNames(typeof(Types));
@@ -38,19 +45,25 @@ namespace Core {
 		}
 
 		public static object Parse(string name) {
-			return Enum.Parse(typeof(Types), name);
+			return Enum.Parse(typeof(Types), name, true);
 		}
 
-		public static Dictionary<Types, ConstructorInfo> Loggers = new Dictionary<Types, ConstructorInfo>() {
-			{Types.Code_swarm, typeof(CodeSwarmAppender).GetConstructor(new Type[] { typeof(string) })},
-			{Types.Gource, typeof(GourceAppender).GetConstructor(new Type[] { typeof(string) })},
-			{Types.Logstalgia, typeof(LogstalgiaAppender).GetConstructor(new Type[] { typeof(string) })}
+		public static Dictionary<Types, Type> Loggers = new Dictionary<Types, Type>() {
+			{Code_swarm, typeof(CodeSwarmAppender)},
+			{Gource, typeof(GourceAppender)},
+			{Logstalgia, typeof(LogstalgiaAppender)},
+			{Gephi, typeof(GephiAppender)}
 		};
 
-		public static Dictionary<Types, ConstructorInfo> TypeLogEvent = new Dictionary<Types, ConstructorInfo>() {
-			{Types.Code_swarm, typeof(LogEvent).GetConstructor(Type.EmptyTypes)},
-			{Types.Gource, typeof(LogEvent).GetConstructor(Type.EmptyTypes)},
-			{Types.Logstalgia, typeof(LogstalgiaEvent).GetConstructor(Type.EmptyTypes)}
+		public static Dictionary<Types, Type> TypeLogEvent = new Dictionary<Types, Type>() {
+			{Code_swarm, typeof(LogEvent)},
+			{Gource, typeof(LogEvent)},
+			{Logstalgia, typeof(LogstalgiaEvent)},
+			{Gephi, typeof(GephiLogEvent)}
 		};
+
+		public static string GetName(Types type) {
+			return Enum.GetName(type.GetType(), type);
+		}
 	}
 }

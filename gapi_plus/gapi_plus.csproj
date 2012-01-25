@@ -48,6 +48,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>gapi_plus.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetOpenAuth">
       <HintPath>..\..\google-api-dotnet-client.samples\Lib\ThirdParty\DotNetOpenAuth.dll</HintPath>
@@ -67,6 +70,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OutFilePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OutFilePanel.Designer.cs">
+      <DependentUpon>OutFilePanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="RGenerator.cs" />
     <Compile Include="UDGenerator.cs" />
     <Compile Include="Generator.cs" />
@@ -84,6 +93,9 @@
     <EmbeddedResource Include="mainForm.resx">
       <DependentUpon>mainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="OutFilePanel.resx">
+      <DependentUpon>OutFilePanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -94,6 +106,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
