@@ -61,11 +61,9 @@ namespace gapi_plus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\deflang1049{\fonttbl{\f0\fmodern\fprq1\fcharset204{\*\fname Courier New;}Courier New CYR;}{\f1\fswiss\fcharset204{\*\fname Arial;}Arial CYR;}{\f2\fnil\fcharset2 Symbol;}}
-        ///{\*\generator Msftedit 5.41.15.1515;}\viewkind4\uc1\pard{\pntext\f2\&apos;B7\tab}{\*\pn\pnlvlblt\pnf2\pnindent0{\pntxtb\&apos;B7}}\fi-284\li284\tx710\f0\fs20 Share\par
-        ///\pard\fi568\b type\b0  \emdash  type post (post, share, etc.)\par
-        ///\b id\b0  \emdash  id share (origin post)\par
-        ///\b actor\b0  \emdash  actor origin po [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to {\rtf1\ansi\deff4\adeflang1025
+        ///{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\froman\fprq2\fcharset2 Symbol;}{\f2\fswiss\fprq2\fcharset0 Arial;}{\f3\froman\fprq2\fcharset204 Times New Roman;}{\f4\fmodern\fprq1\fcharset204 Courier New CYR;}{\f5\fswiss\fprq2\fcharset204 Arial;}{\f6\fnil\fprq0\fcharset2 Symbol;}{\f7\fswiss\fprq0\fcharset204 Arial CYR;}{\f8\fnil\fprq2\fcharset204 Arial Unicode MS;}{\f9\fnil\fprq2\fcharset204 Mangal;}{\f10\fnil\fprq0\fcharset204 Mangal;}}
+        ///{\colortbl;\red0\green0\bl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string rules {
             get {

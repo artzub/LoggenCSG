@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "keypresser", "keypresser\keypresser.csproj", "{46E0E412-1718-4287-8499-4D67FC67C0C7}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{395E1273-ECAD-486A-9BD3-81577344C650}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,12 @@ Global
 		{46E0E412-1718-4287-8499-4D67FC67C0C7}.Release|Mixed Platforms.Build.0 = Release|x86
 		{46E0E412-1718-4287-8499-4D67FC67C0C7}.Release|x86.ActiveCfg = Release|x86
 		{46E0E412-1718-4287-8499-4D67FC67C0C7}.Release|x86.Build.0 = Release|x86
+		{395E1273-ECAD-486A-9BD3-81577344C650}.Debug|Any CPU.ActiveCfg = Debug
+		{395E1273-ECAD-486A-9BD3-81577344C650}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{395E1273-ECAD-486A-9BD3-81577344C650}.Debug|x86.ActiveCfg = Debug
+		{395E1273-ECAD-486A-9BD3-81577344C650}.Release|Any CPU.ActiveCfg = Release
+		{395E1273-ECAD-486A-9BD3-81577344C650}.Release|Mixed Platforms.ActiveCfg = Release
+		{395E1273-ECAD-486A-9BD3-81577344C650}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
