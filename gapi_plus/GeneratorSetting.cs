@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Core;
 
-namespace gapi_plus {
+namespace LoggenCSG {
 	internal class GeneratorSetting : Core.GeneratorSetting {
 		public Visualizers.Types VisLogs {
 			get;

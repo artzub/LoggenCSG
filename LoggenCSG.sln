@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gapi_plus", "gapi_plus\gapi_plus.csproj", "{47F9B145-25CC-44EA-B452-A5C5A79FF96E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggenCSG", "gapi_plus\LoggenCSG.csproj", "{47F9B145-25CC-44EA-B452-A5C5A79FF96E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleApis", "vendors\gapi\Src\GoogleApis\GoogleApis.csproj", "{CBB5E638-F8D5-48DB-93BE-5A7CDD7ED107}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleApis.Authentication.OAuth2", "vendors\gapi\Src\GoogleApis.Authentication.OAuth2\GoogleApis.Authentication.OAuth2.csproj", "{76106493-68EF-4E44-AF2E-971ABF29B300}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{22F7F7E8-85A7-4290-B8E5-B0CD8C61D9E2}"
 EndProject
@@ -45,16 +43,6 @@ Global
 		{CBB5E638-F8D5-48DB-93BE-5A7CDD7ED107}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CBB5E638-F8D5-48DB-93BE-5A7CDD7ED107}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CBB5E638-F8D5-48DB-93BE-5A7CDD7ED107}.Release|x86.ActiveCfg = Release|Any CPU
-		{76106493-68EF-4E44-AF2E-971ABF29B300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76106493-68EF-4E44-AF2E-971ABF29B300}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76106493-68EF-4E44-AF2E-971ABF29B300}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{76106493-68EF-4E44-AF2E-971ABF29B300}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{76106493-68EF-4E44-AF2E-971ABF29B300}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{76106493-68EF-4E44-AF2E-971ABF29B300}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76106493-68EF-4E44-AF2E-971ABF29B300}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76106493-68EF-4E44-AF2E-971ABF29B300}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{76106493-68EF-4E44-AF2E-971ABF29B300}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{76106493-68EF-4E44-AF2E-971ABF29B300}.Release|x86.ActiveCfg = Release|Any CPU
 		{22F7F7E8-85A7-4290-B8E5-B0CD8C61D9E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{22F7F7E8-85A7-4290-B8E5-B0CD8C61D9E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22F7F7E8-85A7-4290-B8E5-B0CD8C61D9E2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

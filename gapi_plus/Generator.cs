@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using Google.Apis.Plus.v1.Data;
 using System.Text.RegularExpressions;
 
-namespace gapi_plus {
+namespace LoggenCSG {
 	internal class Generator : Core.Generator, IDisposable {
 
 		protected enum TypePattern {
@@ -137,12 +137,18 @@ namespace gapi_plus {
 			set;
 		}
 
+		private Google.Apis.Authentication.IAuthenticator Auth {
+			get;
+			set;
+		}
+
 		private PlusService service = null;
 		protected PlusService Service {
 			get {
 				if (service == null)
-					service = new PlusService();
-				service.Key = ApiKey;
+					service = Auth != null ? new PlusService(Auth) : new PlusService();
+				if (Auth == null)
+					service.Key = ApiKey;
 				return service;
 			}			
 		}
@@ -156,6 +162,14 @@ namespace gapi_plus {
 
 		public Generator(string apiKey, IStater stater = null) {
 			ApiKey = apiKey;
+			Auth = null;
+			Stater = stater;
+			haveStater = stater != null;
+		}
+
+		public Generator(Google.Apis.Authentication.IAuthenticator auth, IStater stater = null) {
+			ApiKey = null;
+			Auth = auth;
 			Stater = stater;
 			haveStater = stater != null;
 		}

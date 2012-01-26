@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace gapi_plus {
+namespace LoggenCSG {
 	public partial class OutFilePanel : UserControl {
 
 		public bool Checked {
@@ -47,6 +47,19 @@ namespace gapi_plus {
 			panel1.Enabled = cbName.Checked;
 			if (CheckedChanged != null)
 				CheckedChanged(this, e);
+		}
+
+		private void button1_Click(object sender, EventArgs e) {
+			using (var save = new SaveFileDialog()) {
+				if (!string.IsNullOrWhiteSpace(FileName))
+					save.FileName = FileName;
+
+				save.Filter = "(*.log)|*.log|(*.xml)|*.xml|(*.db)|*.db|All files (*.*)|*.*";
+				save.Title = "Select a file to save the log to " + Title;
+				save.RestoreDirectory = true;
+				if (save.ShowDialog(this) == DialogResult.OK)
+					FileName = save.FileName;
+			}
 		}
 	}
 }

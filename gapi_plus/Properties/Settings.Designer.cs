@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace gapi_plus.Properties {
+namespace LoggenCSG.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

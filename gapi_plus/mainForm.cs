@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Core;
 using System.IO;
 
-namespace gapi_plus {
+namespace LoggenCSG {
 	public partial class mainForm : Form {
 		public mainForm() {
 			InitializeComponent();
@@ -161,7 +161,7 @@ namespace gapi_plus {
 		}
 
 		private void btGen_Click(object sender, EventArgs e) {
-			if (string.IsNullOrWhiteSpace(apikey.Text)) {
+			if (string.IsNullOrWhiteSpace(apikey.Text) && Program.OAuth2 == null) {
 				new Exception("Укажите ваш API key").ShowError(this);
 				return;
 			}
@@ -194,8 +194,7 @@ namespace gapi_plus {
 					if (filenames.Count < 1)
 						return;
 
-					//UD
-					(new RGenerator(apikey.Text, sc)).Run(new GeneratorSetting() {
+					var sett = new GeneratorSetting() {
 						ProfileID = /*"101113754039426612780"*/tbID.Text,
 						Rules = rules,
 						VisLogs = (Visualizers.Types) flags,
@@ -208,10 +207,16 @@ namespace gapi_plus {
 							{Visualizers.Gephi, Generator.LogGen},
 						},
 						MaxResults = Convert.ToInt32(nudMaxRes.Value),
-						MaxComments = 20,
-						MaxPluses = 20,
-						MaxReshares = 20
-					});
+						MaxComments = Convert.ToInt32(nudMaxComment.Value),
+						MaxPluses = Convert.ToInt32(nudMaxPlus.Value),
+						MaxReshares = Convert.ToInt32(nudMaxReshare.Value)
+					};
+
+					//UD
+					if (checkBox1.Checked)
+						(Program.OAuth2 != null ? new RGenerator(Program.OAuth2, sc) : new RGenerator(apikey.Text, sc)).Run(sett);
+					else
+						(Program.OAuth2 != null ? new Generator(Program.OAuth2, sc) : new Generator(apikey.Text, sc)).Run(sett);
 				}
 				finally {
 					btGen.Enabled = true;
@@ -227,6 +232,17 @@ namespace gapi_plus {
 
 		private void cb_CheckedChanged(object sender, EventArgs e) {
 			CheckEnabledGen();
+		}
+
+		private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
+			MessageBox.Show(this,
+				string.Format("{0} v{1}\nUsed Google APIs.\nApache License v2 http://www.apache.org/licenses/ \nCreate by Artem Zubkov (ArtZub@gmail.com) © 2012.",
+					Application.ProductName, Application.ProductVersion),
+				"About programm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
+
+		private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
+			Close();
 		}
 	}
 }

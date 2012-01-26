@@ -18,8 +18,8 @@ using System.Runtime.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("gephiModel", "FK_Edge_0", "Node", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Logger.Node), "Edge", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Logger.Edge), true)]
-[assembly: EdmRelationshipAttribute("gephiModel", "FK_Edge_1", "Node", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Logger.Node), "Edge", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Logger.Edge), true)]
+[assembly: EdmRelationshipAttribute("gephiModel", "FK_Edges_0", "Nodes", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Logger.Node), "Edges", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Logger.Edge), true)]
+[assembly: EdmRelationshipAttribute("gephiModel", "FK_Edges_1", "Nodes", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Logger.Node), "Edges", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Logger.Edge), true)]
 
 #endregion
 
@@ -315,16 +315,16 @@ namespace Logger
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("gephiModel", "FK_Edge_0", "Node")]
-        public Node NodeSource
+        [EdmRelationshipNavigationPropertyAttribute("gephiModel", "FK_Edges_0", "Nodes")]
+        public Node Node
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Node>("gephiModel.FK_Edge_0", "Node").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Node>("gephiModel.FK_Edges_0", "Nodes").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Node>("gephiModel.FK_Edge_0", "Node").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Node>("gephiModel.FK_Edges_0", "Nodes").Value = value;
             }
         }
         /// <summary>
@@ -332,17 +332,17 @@ namespace Logger
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Node> NodeSourceReference
+        public EntityReference<Node> NodeReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Node>("gephiModel.FK_Edge_0", "Node");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Node>("gephiModel.FK_Edges_0", "Nodes");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Node>("gephiModel.FK_Edge_0", "Node", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Node>("gephiModel.FK_Edges_0", "Nodes", value);
                 }
             }
         }
@@ -353,16 +353,16 @@ namespace Logger
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("gephiModel", "FK_Edge_1", "Node")]
-        public Node NodeTarget
+        [EdmRelationshipNavigationPropertyAttribute("gephiModel", "FK_Edges_1", "Nodes")]
+        public Node Node1
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Node>("gephiModel.FK_Edge_1", "Node").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Node>("gephiModel.FK_Edges_1", "Nodes").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Node>("gephiModel.FK_Edge_1", "Node").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Node>("gephiModel.FK_Edges_1", "Nodes").Value = value;
             }
         }
         /// <summary>
@@ -370,17 +370,17 @@ namespace Logger
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Node> NodeTargetReference
+        public EntityReference<Node> Node1Reference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Node>("gephiModel.FK_Edge_1", "Node");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Node>("gephiModel.FK_Edges_1", "Nodes");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Node>("gephiModel.FK_Edge_1", "Node", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Node>("gephiModel.FK_Edges_1", "Nodes", value);
                 }
             }
         }
@@ -595,18 +595,18 @@ namespace Logger
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("gephiModel", "FK_Edge_0", "Edge")]
-        public EntityCollection<Edge> SourceEdges
+        [EdmRelationshipNavigationPropertyAttribute("gephiModel", "FK_Edges_0", "Edges")]
+        public EntityCollection<Edge> Edges
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Edge>("gephiModel.FK_Edge_0", "Edge");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Edge>("gephiModel.FK_Edges_0", "Edges");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Edge>("gephiModel.FK_Edge_0", "Edge", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Edge>("gephiModel.FK_Edges_0", "Edges", value);
                 }
             }
         }
@@ -617,18 +617,18 @@ namespace Logger
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("gephiModel", "FK_Edge_1", "Edge")]
-        public EntityCollection<Edge> TargetEdges
+        [EdmRelationshipNavigationPropertyAttribute("gephiModel", "FK_Edges_1", "Edges")]
+        public EntityCollection<Edge> Edges1
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Edge>("gephiModel.FK_Edge_1", "Edge");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Edge>("gephiModel.FK_Edges_1", "Edges");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Edge>("gephiModel.FK_Edge_1", "Edge", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Edge>("gephiModel.FK_Edges_1", "Edges", value);
                 }
             }
         }

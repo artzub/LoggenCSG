@@ -7,7 +7,7 @@ using Logger;
 using System.Collections.Generic;
 using Google.Apis.Plus.v1.Data;
 
-namespace gapi_plus {
+namespace LoggenCSG {
 	internal class UDGenerator : Generator {
 		public UDGenerator(string apiKey, IStater stater = null) : 
 			base(apiKey, stater) {

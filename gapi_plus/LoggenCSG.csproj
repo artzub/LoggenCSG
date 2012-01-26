@@ -8,10 +8,11 @@
     <ProjectGuid>{47F9B145-25CC-44EA-B452-A5C5A79FF96E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>gapi_plus</RootNamespace>
-    <AssemblyName>gapi_plus</AssemblyName>
+    <RootNamespace>LoggenCSG</RootNamespace>
+    <AssemblyName>LoggenCSG</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -49,11 +50,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>gapi_plus.Program</StartupObject>
+    <StartupObject>LoggenCSG.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>google-log-gen.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetOpenAuth">
       <HintPath>..\..\google-api-dotnet-client.samples\Lib\ThirdParty\DotNetOpenAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Authentication.OAuth2">
+      <HintPath>..\vendors\ThirdParty\Google.Apis.Authentication.OAuth2.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Samples.Helper">
+      <HintPath>..\vendors\ThirdParty\Google.Apis.Samples.Helper.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json.Net35">
       <HintPath>..\..\google-api-dotnet-client.samples\Lib\ThirdParty\Newtonsoft.Json.Net35.dll</HintPath>
@@ -70,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientCredentials.cs" />
     <Compile Include="OutFilePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -122,10 +133,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\vendors\gapi\Src\GoogleApis.Authentication.OAuth2\GoogleApis.Authentication.OAuth2.csproj">
-      <Project>{76106493-68EF-4E44-AF2E-971ABF29B300}</Project>
-      <Name>GoogleApis.Authentication.OAuth2</Name>
-    </ProjectReference>
     <ProjectReference Include="..\vendors\gapi\Src\GoogleApis\GoogleApis.csproj">
       <Project>{CBB5E638-F8D5-48DB-93BE-5A7CDD7ED107}</Project>
       <Name>GoogleApis</Name>
@@ -160,6 +167,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="google-log-gen.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
