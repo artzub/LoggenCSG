@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Data.EntityClient;
 using System.Data.SQLite;
+using System.Data;
 
 namespace Logger {
 	public class GephiAppender : SQLiteAppender {
@@ -13,10 +14,6 @@ namespace Logger {
 		private gephiEntities Gephi {
 			get {
 				if (gephi == null) {
-
-					if (System.IO.File.Exists(connectionString)) {
-						System.IO.File.Delete(connectionString);
-					}
 
 					var con = new EntityConnectionStringBuilder();
 					con.Metadata = @"res://*/GephiModel.csdl|res://*/GephiModel.ssdl|res://*/GephiModel.msl";
@@ -27,7 +24,11 @@ namespace Logger {
 						}.ToString();
 					gephi = new gephiEntities(con.ConnectionString);
 
-					gephi.ExecuteStoreCommand("CREATE TABLE [Nodes] (" +
+					try {
+						gephi.Nodes.Count();
+					}
+					catch (Exception e) {
+						gephi.ExecuteStoreCommand("CREATE TABLE [Nodes] (" +
 						"[Id] INTEGER NOT NULL ON CONFLICT ABORT PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, " +
 						"[Label] VARCHAR2 NOT NULL ON CONFLICT ABORT, " +
 						"[Size] INTEGER DEFAULT (1), " +
@@ -36,17 +37,23 @@ namespace Logger {
 						"[X] INTEGER, " +
 						"[Y] INTEGER)");
 
-					gephi.ExecuteStoreCommand("CREATE UNIQUE INDEX [uknode] ON [Nodes] ([Label] COLLATE RTRIM ASC)");
+						gephi.ExecuteStoreCommand("CREATE UNIQUE INDEX [uknode] ON [Nodes] ([Label] COLLATE RTRIM ASC)");
+					}
 
-					gephi.ExecuteStoreCommand("CREATE TABLE [Edges] (" +
-						"[Id] INTEGER NOT NULL ON CONFLICT ABORT PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, " + 
-						"[Source] INTEGER NOT NULL ON CONFLICT ABORT CONSTRAINT [fksource] REFERENCES [Nodes]([Id]) ON DELETE CASCADE, " +
-						"[Target] INTEGER NOT NULL ON CONFLICT ABORT CONSTRAINT [fktarget] REFERENCES [Nodes]([Id]) ON DELETE CASCADE, " +
-						"[Size] INTEGER DEFAULT (1), " +
-						"[Start] DATETIME, " +
-						"[End] DATETIME)");
+					try {
+						gephi.Edges.Count();
+					}
+					catch (Exception e) {
+						gephi.ExecuteStoreCommand("CREATE TABLE [Edges] (" +
+							"[Id] INTEGER NOT NULL ON CONFLICT ABORT PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, " + 
+							"[Source] INTEGER NOT NULL ON CONFLICT ABORT CONSTRAINT [fksource] REFERENCES [Nodes]([Id]) ON DELETE CASCADE, " +
+							"[Target] INTEGER NOT NULL ON CONFLICT ABORT CONSTRAINT [fktarget] REFERENCES [Nodes]([Id]) ON DELETE CASCADE, " +
+							"[Size] INTEGER DEFAULT (1), " +
+							"[Start] DATETIME, " +
+							"[End] DATETIME)");
 
-					gephi.ExecuteStoreCommand("CREATE UNIQUE INDEX [ukedge] ON [Edges] ([Source] ASC, [Target] ASC)");
+						gephi.ExecuteStoreCommand("CREATE UNIQUE INDEX [ukedge] ON [Edges] ([Source] ASC, [Target] ASC)");
+					}
 				}
 				return gephi;
 			}

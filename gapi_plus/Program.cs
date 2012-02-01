@@ -26,6 +26,14 @@ namespace LoggenCSG {
 			);
 		}
 
+		public static bool IsEmpty(this string str) {
+			return string.IsNullOrWhiteSpace(str);
+		}
+
+		public static bool IsNotEmpty(this string str) {
+			return !str.IsEmpty();
+		}
+
 		#region by Google
 
 		/*

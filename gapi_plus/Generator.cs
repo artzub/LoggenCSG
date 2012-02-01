@@ -8,6 +8,7 @@ using Logger;
 using System.Collections.Generic;
 using Google.Apis.Plus.v1.Data;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace LoggenCSG {
 	internal class Generator : Core.Generator, IDisposable {
@@ -137,6 +138,8 @@ namespace LoggenCSG {
 			set;
 		}
 
+		protected static string Logout = "outlog.log";
+
 		private Google.Apis.Authentication.IAuthenticator Auth {
 			get;
 			set;
@@ -165,6 +168,8 @@ namespace LoggenCSG {
 			Auth = null;
 			Stater = stater;
 			haveStater = stater != null;
+			InitLogfile();
+			WriteLog("Ctor simple apikey", this);
 		}
 
 		public Generator(Google.Apis.Authentication.IAuthenticator auth, IStater stater = null) {
@@ -172,6 +177,26 @@ namespace LoggenCSG {
 			Auth = auth;
 			Stater = stater;
 			haveStater = stater != null;
+			InitLogfile();
+			WriteLog("Ctor auth", this);
+		}
+
+		private static void InitLogfile() {
+			using (var wt = (new FileInfo(Logout)).OpenWrite())
+				wt.Write(new byte[] {}, 0, 0);			
+		}
+
+		protected static void WriteLog(string message, object sender, bool error = false){
+			using (var wt = (new FileInfo(Logout)).AppendText())
+				wt.WriteLine("{0};{1};{2};{3}", DateTime.Now, 
+					sender, 
+					error ? "Error" : "",
+					message
+				);
+		}
+
+		protected static void WriteLog(Exception e, object sender) {
+			WriteLog(e.Message + "|" + (e.InnerException ?? new Exception("")).Message, sender, true);
 		}
 
 
@@ -316,6 +341,7 @@ namespace LoggenCSG {
 						}
 					}
 					catch (Exception e) {
+						WriteLog(e, "Generator.LogGen");
 					}
 				}
 
@@ -347,6 +373,7 @@ namespace LoggenCSG {
 						}
 					}
 					catch (Exception e) {
+						WriteLog(e, "Generator.LogGen");
 					}
 				}
 
@@ -378,6 +405,7 @@ namespace LoggenCSG {
 						}
 					}
 					catch (Exception e) {
+						WriteLog(e, "Generator.LogGen");
 					}
 				}
 			}
@@ -566,126 +594,136 @@ namespace LoggenCSG {
 
 			var setting = insetting as GeneratorSetting;
 
-			var acts = Service.Activities.List(setting.ProfileID, setting.Collection);
+			var ids = setting.ProfileID.Split(new char[] { ';', ',' });
 
-			var step = setting.MaxResults / (double)100;
-			string nextPage = string.Empty;
+			foreach (var pid in ids) {
 
-			if (loggers == null)
-				loggers = new Dictionary<Visualizers.Types, Appender>();
-			foreach (var log in setting.LogFiles) {
-				try {
-					if (setting.VisLogs.HasFlag(log.Key) && (!loggers.ContainsKey(log.Key) || loggers[log.Key] == null))
-						loggers[log.Key] = Visualizers.Loggers[log.Key]
-							.GetConstructor(new Type[] { typeof(string) })
-								.Invoke(new object[] { log.Value }) as Appender;
-				}
-				catch (Exception e) {
-					throw;
-				}
-			}
-			
-			while(step != 0) {
+				var acts = Service.Activities.List(pid, setting.Collection);
 
-				var nextResults = 100;
-				if(step-- < 1) {
-					nextResults = (int)((step + 1) * 100);
-					step = 0;
-				}
+				var step = setting.MaxResults / (double)100;
+				string nextPage = string.Empty;
 
-				acts.MaxResults = nextResults;
-				acts.PageToken = nextPage;
-
-				if (haveStater) {
-					Stater.MaxPosition = nextResults;					
-					Stater.SetState("Load feeds ...");
-				}
-
-				Dictionary<Activity, ActivityCont> dicdate = null;				
-
-				try {
-					var feed = acts.Fetch();
-
-					nextPage = feed.NextPageToken;
-					if (string.IsNullOrWhiteSpace(nextPage)) {
-						step = 0;
-						Stater.Position = Stater.MaxPosition;
+				if (loggers == null)
+					loggers = new Dictionary<Visualizers.Types, Appender>();
+				foreach (var log in setting.LogFiles) {
+					try {
+						if (setting.VisLogs.HasFlag(log.Key) && (!loggers.ContainsKey(log.Key) || loggers[log.Key] == null))
+							loggers[log.Key] = Visualizers.Loggers[log.Key]
+								.GetConstructor(new Type[] { typeof(string) })
+									.Invoke(new object[] { log.Value }) as Appender;
 					}
+					catch (Exception e) {
+						WriteLog(e, this);
+					}
+				}
+
+				while (step != 0) {
+
+					var nextResults = 100;
+					if (step-- < 1) {
+						nextResults = (int)((step + 1) * 100);
+						step = 0;
+					}
+
+					acts.MaxResults = nextResults;
+					acts.PageToken = nextPage;
 
 					if (haveStater) {
-						Stater.MaxPosition = feed.Items.Count;
-						Stater.SetState("Parsing ...");
+						Stater.MaxPosition = nextResults;
+						Stater.SetState("Load feeds ...");
 					}
 
-					if (dicdate == null)
-						dicdate = new Dictionary<Activity, ActivityCont>();
-					dicdate.Clear();
+					Dictionary<Activity, ActivityCont> dicdate = null;
 
-					if (feed.Items.Count > 0) {						
-						foreach (var item in feed.Items) {
-								
-							var ditem = dicdate[item] = new ActivityCont();
+					try {
+						var feed = acts.Fetch();
 
-							if (item.Object != null) {
-
-								if (item.Verb == "share" && 
-									!string.IsNullOrWhiteSpace(item.Object.Id)) {
-									try {
-										ditem.Share = Service.Activities.Get(item.Object.Id).Fetch();
-									}
-									catch(Exception e) {
-									}
-								}
-
-								if (item.Object.Replies.TotalItems > 0) {
-									var plser = Service.Comments.List(item.Id);
-									plser.MaxResults = setting.MaxComments;
-									try {
-										var listpl = plser.Fetch();
-
-										ditem.Comments = listpl.Items;
-									}
-									catch (Exception e) {											
-									}										
-								}
-
-								if (item.Object.Plusoners.TotalItems > 0) {
-									var plser = Service.People.ListByActivity(item.Id, PeopleResource.Collection.Plusoners);
-									plser.MaxResults = setting.MaxPluses;
-
-									try {
-										var listpl = plser.Fetch();
-
-										ditem.Plusers = listpl.Items;
-									}
-									catch (Exception e) {											
-									}
-								}
-
-								if (item.Object.Resharers.TotalItems > 0) {
-									var plser = Service.People.ListByActivity(item.Id, PeopleResource.Collection.Resharers);
-									plser.MaxResults = setting.MaxReshares;
-
-									try {
-										var listpl = plser.Fetch();
-
-										ditem.Sharers = listpl.Items;
-									}
-									catch (Exception e) {											
-									}										
-								}
-							}
-
-							if (haveStater)
-								Stater.Inc();
+						nextPage = feed.NextPageToken;
+						if (string.IsNullOrWhiteSpace(nextPage)) {
+							step = 0;
+							Stater.Position = Stater.MaxPosition;
 						}
 
-						GenerateLogs(dicdate, setting, loggers);
+						if (haveStater) {
+							Stater.MaxPosition = feed.Items.Count;
+							Stater.SetState("Parsing ...");
+						}
+
+						if (dicdate == null)
+							dicdate = new Dictionary<Activity, ActivityCont>();
+						dicdate.Clear();
+
+						if (feed.Items.Count > 0) {
+							foreach (var item in feed.Items) {
+
+								var ditem = dicdate[item] = new ActivityCont();
+
+								if (item.Object != null) {
+
+									if (item.Verb == "share" && 
+									!string.IsNullOrWhiteSpace(item.Object.Id)) {
+										try {
+											ditem.Share = Service.Activities.Get(item.Object.Id).Fetch();
+										}
+										catch (Exception e) {
+											WriteLog(e, this);
+										}
+									}
+
+									if (item.Object.Replies.TotalItems > 0) {
+										var plser = Service.Comments.List(item.Id);
+										plser.MaxResults = setting.MaxComments;
+										try {
+											var listpl = plser.Fetch();
+
+											ditem.Comments = listpl.Items;
+										}
+										catch (Exception e) {
+											WriteLog(e, this);
+										}
+									}
+
+									if (item.Object.Plusoners.TotalItems > 0) {
+										var plser = Service.People.ListByActivity(item.Id, PeopleResource.Collection.Plusoners);
+										plser.MaxResults = setting.MaxPluses;
+
+										try {
+											var listpl = plser.Fetch();
+
+											ditem.Plusers = listpl.Items;
+										}
+										catch (Exception e) {
+											WriteLog(e, this);
+										}
+									}
+
+									if (item.Object.Resharers.TotalItems > 0) {
+										var plser = Service.People.ListByActivity(item.Id, PeopleResource.Collection.Resharers);
+										plser.MaxResults = setting.MaxReshares;
+
+										try {
+											var listpl = plser.Fetch();
+
+											ditem.Sharers = listpl.Items;
+										}
+										catch (Exception e) {
+											WriteLog(e, this);
+										}
+									}
+								}
+
+								if (haveStater)
+									Stater.Inc();
+							}
+
+							GenerateLogs(dicdate, setting, loggers);
+						}
 					}
-				}
-				catch (Exception e) {
-					e.ShowError();
-					step = 0;
+					catch (Exception e) {
+						WriteLog(e, this);
+						e.ShowError();
+						step = 0;
+					}
 				}
 			}
 			return true;

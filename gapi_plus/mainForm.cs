@@ -27,7 +27,7 @@ namespace LoggenCSG {
 		private bool busy = false;
 
 		private void mainForm_Load(object sender, EventArgs e) {
-			var file = new System.IO.FileInfo("temp");
+			var file = new System.IO.FileInfo("temp.rtf");
 			try {
 				if (file.Exists)
 					file.Delete();
@@ -161,15 +161,23 @@ namespace LoggenCSG {
 		}
 
 		private void btGen_Click(object sender, EventArgs e) {
-			if (string.IsNullOrWhiteSpace(apikey.Text) && Program.OAuth2 == null) {
-				new Exception("Укажите ваш API key").ShowError(this);
+
+			if (tbID.Text.IsEmpty()) {
+				new Exception("Enter Profile ID").ShowError(this);
+				tbID.Focus();
+				return;
+			}
+
+			if (apikey.Text.IsEmpty() && Program.OAuth2 == null) {
+				new Exception("Enter your simple API key").ShowError(this);
 				return;
 			}
 
 			using (var sc = new StateControl()) {
 				sc.Dock = DockStyle.Fill;
-				tableLayoutPanel1.Controls.Remove(apip);
-				tableLayoutPanel1.Controls.Add(sc, 1, 3);
+				//tableLayoutPanel1.Controls.Remove(apip);
+				tableLayoutPanel1.Controls.Add(sc, 1, 5);
+				Application.DoEvents();
 
 				btGen.Enabled = false;
 				try {
@@ -187,6 +195,8 @@ namespace LoggenCSG {
 							if (cont.Checked) {
 								flags = flags | key;
 								filenames[key] = cont.FileName;
+								if (File.Exists(cont.FileName))
+									File.Delete(cont.FileName);
 							}
 						}
 					}
@@ -194,35 +204,45 @@ namespace LoggenCSG {
 					if (filenames.Count < 1)
 						return;
 
-					var sett = new GeneratorSetting() {
-						ProfileID = /*"101113754039426612780"*/tbID.Text,
-						Rules = rules,
-						VisLogs = (Visualizers.Types) flags,
-						LogFiles = filenames,
-						Methods = new Dictionary<Visualizers.Types, GeneratorLogsMeth> {
-							//UD
-							{Visualizers.Code_swarm, UDGenerator.LogGen},
-							{Visualizers.Gource, Generator.LogGen},
-							{Visualizers.Logstalgia, Generator.LogGen},
-							{Visualizers.Gephi, Generator.LogGen},
-						},
-						MaxResults = Convert.ToInt32(nudMaxRes.Value),
-						MaxComments = Convert.ToInt32(nudMaxComment.Value),
-						MaxPluses = Convert.ToInt32(nudMaxPlus.Value),
-						MaxReshares = Convert.ToInt32(nudMaxReshare.Value)
-					};
-
-					//UD
-					if (checkBox1.Checked)
-						(Program.OAuth2 != null ? new RGenerator(Program.OAuth2, sc) : new RGenerator(apikey.Text, sc)).Run(sett);
-					else
-						(Program.OAuth2 != null ? new Generator(Program.OAuth2, sc) : new Generator(apikey.Text, sc)).Run(sett);
+					Generate(tbID.Text, sc, flags, filenames);
 				}
 				finally {
 					btGen.Enabled = true;
 					tableLayoutPanel1.Controls.Remove(sc);
-					tableLayoutPanel1.Controls.Add(apip, 1, 3);
+					//tableLayoutPanel1.Controls.Add(apip, 1, 3);
 				}
+			}
+		}
+
+		private void Generate(string idProfile, StateControl sc, Visualizers.Types flags, Dictionary<Visualizers.Types, string> filenames) {
+			var sett = new GeneratorSetting() {
+				ProfileID = /*"101113754039426612780"*/idProfile,
+				Rules = rules,
+				VisLogs = (Visualizers.Types)flags,
+				LogFiles = filenames,
+				Methods = new Dictionary<Visualizers.Types, GeneratorLogsMeth> {
+					//UD
+					{Visualizers.Code_swarm, UDGenerator.LogGen},
+					{Visualizers.Gource, Generator.LogGen},
+					{Visualizers.Logstalgia, Generator.LogGen},
+					{Visualizers.Gephi, Generator.LogGen},
+				},
+				MaxResults = Convert.ToInt32(nudMaxRes.Value),
+				MaxComments = Convert.ToInt32(nudMaxComment.Value),
+				MaxPluses = Convert.ToInt32(nudMaxPlus.Value),
+				MaxReshares = Convert.ToInt32(nudMaxReshare.Value),
+				Deep = checkBox1.Checked ? Convert.ToInt32(nudDeep.Value) : 0
+			};
+
+			//UD
+			if (checkBox2.Checked) {
+				new FollowersGenerator(apikey.Text, sc).Run(sett);
+			}
+			else {
+				if (checkBox1.Checked)
+					(Program.OAuth2 != null ? new RGenerator(Program.OAuth2, sc) : new RGenerator(apikey.Text, sc)).Run(sett);
+				else
+					(Program.OAuth2 != null ? new RGenerator(Program.OAuth2, sc) : new Generator(apikey.Text, sc)).Run(sett);
 			}
 		}
 
@@ -243,6 +263,16 @@ namespace LoggenCSG {
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
 			Close();
+		}
+
+		private void checkBox2_CheckedChanged(object sender, EventArgs e) {
+			nudMaxComment.Enabled = 
+				nudMaxPlus.Enabled = 
+				nudMaxReshare.Enabled = !checkBox2.Checked;
+		}
+
+		private void checkBox1_CheckedChanged(object sender, EventArgs e) {
+			nudDeep.Enabled = checkBox1.Checked;
 		}
 	}
 }

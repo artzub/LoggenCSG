@@ -54,6 +54,11 @@ namespace LoggenCSG {
 			set;
 		}
 
+		public int Deep {
+			get;
+			set;
+		}
+
 		public GeneratorSetting() {
 			Collection = Google.Apis.Plus.v1.ActivitiesResource.Collection.Public;
 		}

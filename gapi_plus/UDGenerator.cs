@@ -82,6 +82,7 @@ namespace LoggenCSG {
 						}
 					}
 					catch (Exception e) {
+						WriteLog(e, "UDGenerator.LogGen");
 					}
 				}
 
@@ -109,6 +110,7 @@ namespace LoggenCSG {
 						}
 					}
 					catch (Exception e) {
+						WriteLog(e, "UDGenerator.LogGen");
 					}
 				}
 
@@ -136,6 +138,7 @@ namespace LoggenCSG {
 						}
 					}
 					catch (Exception e) {
+						WriteLog(e, "UDGenerator.LogGen");
 					}
 				}
 			}

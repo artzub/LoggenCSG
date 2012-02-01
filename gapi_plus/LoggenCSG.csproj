@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientCredentials.cs" />
+    <Compile Include="FollowersGenerator.cs" />
     <Compile Include="OutFilePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -118,6 +119,8 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="LICENSE" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -27,6 +27,7 @@ namespace Logger {
 		public FileAppender(string fileName, string delimiter = ";") : base() {
 			FileName = fileName;
 			this.delimiter = delimiter;
+
 		}
 
 		public string FileName {
@@ -45,6 +46,7 @@ namespace Logger {
 
 		private void Write(string str) {
 			using (var file = new FileInfo(FileName).AppendText()) {
+				file.NewLine = "\n";
 				file.WriteLine(str);
 			}
 		}
