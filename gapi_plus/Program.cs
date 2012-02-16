@@ -34,6 +34,8 @@ namespace LoggenCSG {
 			return !str.IsEmpty();
 		}
 
+		const string cacheFile = "google.samples.dotnet.plus";
+
 		#region by Google
 
 		/*
@@ -63,7 +65,7 @@ namespace LoggenCSG {
 		private static IAuthorizationState GetAuthentication(NativeApplicationClient client) {
 			// You should use a more secure way of storing the key here as
 			// .NET applications can be disassembled using a reflection tool.
-			const string STORAGE = "google.samples.dotnet.plus";
+			const string STORAGE = cacheFile;
 			const string KEY = "y},drdzf11x9;87";
 			string scope = Google.Apis.Plus.v1.PlusService.Scopes.PlusMe.GetStringValue();
 
@@ -100,6 +102,13 @@ namespace LoggenCSG {
 			try {
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
+
+				if (Properties.Settings.Default.version != Application.ProductVersion) {
+					Properties.Settings.Default.version = Application.ProductVersion;
+					Properties.Settings.Default.Save();
+					if (AppData.Exists(cacheFile + ".auth"))
+						System.IO.File.Delete(AppData.GetFilePath(cacheFile + ".auth"));
+				}
 
 				OAuth2 = CreateAuthenticator();
 

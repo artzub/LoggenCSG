@@ -28,13 +28,13 @@
         "Entry"
         {
         "MsmKey" = "8:_1DEF668B7B4BFC0BC8BB8481A043390C"
-        "OwnerKey" = "8:_4558117808730B78C8FC5CD9F2D22DCA"
+        "OwnerKey" = "8:_0EA84994380B4827B12967956271D1E9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_1DEF668B7B4BFC0BC8BB8481A043390C"
-        "OwnerKey" = "8:_0EA84994380B4827B12967956271D1E9"
+        "OwnerKey" = "8:_4558117808730B78C8FC5CD9F2D22DCA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -136,13 +136,13 @@
         "Entry"
         {
         "MsmKey" = "8:_FAF769B6348C1E68DFDCDC8FD9D7F754"
-        "OwnerKey" = "8:_0EA84994380B4827B12967956271D1E9"
+        "OwnerKey" = "8:_CC86DA77A8F944EF8EDE910213F43752"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_FAF769B6348C1E68DFDCDC8FD9D7F754"
-        "OwnerKey" = "8:_CC86DA77A8F944EF8EDE910213F43752"
+        "OwnerKey" = "8:_0EA84994380B4827B12967956271D1E9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -154,49 +154,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FAF769B6348C1E68DFDCDC8FD9D7F754"
+        "OwnerKey" = "8:_67798E09E4ED4F7C8FFFD224E9931364"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F26C1F46595C88E32CC4AA77EFF7B54F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_4DEED254206B6967C375833FCEFDF18C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9686534A2722BBDE91742BEF23417710"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F3C7ED02EB1A9420AABC0905EB60D5FD"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C90FDAAB9800DAD768B8FBB86D8C0820"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1DEF668B7B4BFC0BC8BB8481A043390C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EBB8845BEB8DFC87C0C3D7AC0C8BECA1"
+        "OwnerKey" = "8:_0EA84994380B4827B12967956271D1E9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -208,13 +172,49 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0EA84994380B4827B12967956271D1E9"
+        "OwnerKey" = "8:_EBB8845BEB8DFC87C0C3D7AC0C8BECA1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_67798E09E4ED4F7C8FFFD224E9931364"
+        "OwnerKey" = "8:_1DEF668B7B4BFC0BC8BB8481A043390C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C90FDAAB9800DAD768B8FBB86D8C0820"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F3C7ED02EB1A9420AABC0905EB60D5FD"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9686534A2722BBDE91742BEF23417710"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_4DEED254206B6967C375833FCEFDF18C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F26C1F46595C88E32CC4AA77EFF7B54F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_FAF769B6348C1E68DFDCDC8FD9D7F754"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -244,10 +244,10 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0"
                     {
-                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    "Name" = "8:Microsoft .NET Framework 4 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
                     {
@@ -329,6 +329,11 @@
             "AssemblyAsmDisplayName" = "8:DotNetOpenAuth, Version=4.0.0.11165, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_1DEF668B7B4BFC0BC8BB8481A043390C"
+                    {
+                    "Name" = "8:DotNetOpenAuth.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:DotNetOpenAuth.dll"
             "TargetName" = "8:"
@@ -355,6 +360,11 @@
             "AssemblyAsmDisplayName" = "8:Google.Apis.Samples.Helper, Version=1.0.0.21819, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_4558117808730B78C8FC5CD9F2D22DCA"
+                    {
+                    "Name" = "8:Google.Apis.Samples.Helper.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Google.Apis.Samples.Helper.dll"
             "TargetName" = "8:"
@@ -378,9 +388,14 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Core, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Core, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_4DEED254206B6967C375833FCEFDF18C"
+                    {
+                    "Name" = "8:Core.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Core.dll"
             "TargetName" = "8:"
@@ -427,6 +442,11 @@
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json.Net35, Version=4.0.2.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_9686534A2722BBDE91742BEF23417710"
+                    {
+                    "Name" = "8:Newtonsoft.Json.Net35.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.Net35.dll"
             "TargetName" = "8:"
@@ -453,6 +473,11 @@
             "AssemblyAsmDisplayName" = "8:log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_C90FDAAB9800DAD768B8FBB86D8C0820"
+                    {
+                    "Name" = "8:log4net.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:log4net.dll"
             "TargetName" = "8:"
@@ -510,6 +535,11 @@
             "AssemblyAsmDisplayName" = "8:Google.Apis.Authentication.OAuth2, Version=1.1.4344.23415, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_EBB8845BEB8DFC87C0C3D7AC0C8BECA1"
+                    {
+                    "Name" = "8:Google.Apis.Authentication.OAuth2.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Google.Apis.Authentication.OAuth2.dll"
             "TargetName" = "8:"
@@ -533,9 +563,14 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Logger, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Logger, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_F26C1F46595C88E32CC4AA77EFF7B54F"
+                    {
+                    "Name" = "8:Logger.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Logger.dll"
             "TargetName" = "8:"
@@ -562,6 +597,11 @@
             "AssemblyAsmDisplayName" = "8:Google.Apis, Version=1.1.4408.6159, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_F3C7ED02EB1A9420AABC0905EB60D5FD"
+                    {
+                    "Name" = "8:Google.Apis.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Google.Apis.dll"
             "TargetName" = "8:"
@@ -608,6 +648,11 @@
             "AssemblyAsmDisplayName" = "8:System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
+                    "_FAF769B6348C1E68DFDCDC8FD9D7F754"
+                    {
+                    "Name" = "8:System.Data.SQLite.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:System.Data.SQLite.dll"
             "TargetName" = "8:"
@@ -727,15 +772,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:LoggenCSG"
-        "ProductCode" = "8:{6004C9DA-A9DE-4367-B4B5-E6E0CCAADC4A}"
-        "PackageCode" = "8:{4EE0DBC1-07E2-4615-85CD-83BCC921F668}"
+        "ProductCode" = "8:{00278FBD-17CD-4C93-8531-AB8A03C147E7}"
+        "PackageCode" = "8:{CE0FE56D-4250-4048-9771-F6EAF7F01219}"
         "UpgradeCode" = "8:{D7775749-E7C7-49CA-93E0-44A6C22324DC}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.1.06"
+        "ProductVersion" = "8:0.1.07"
         "Manufacturer" = "8:Artzub"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

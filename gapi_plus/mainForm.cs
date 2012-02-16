@@ -231,18 +231,18 @@ namespace LoggenCSG {
 				MaxComments = Convert.ToInt32(nudMaxComment.Value),
 				MaxPluses = Convert.ToInt32(nudMaxPlus.Value),
 				MaxReshares = Convert.ToInt32(nudMaxReshare.Value),
-				Deep = checkBox1.Checked ? Convert.ToInt32(nudDeep.Value) : 0
+				Deep = cbDeep.Checked ? Convert.ToInt32(nudDeep.Value) : 0
 			};
 
 			//UD
-			if (checkBox2.Checked) {
+			if (cbFGraph.Checked) {
 				new FollowersGenerator(apikey.Text, sc).Run(sett);
 			}
 			else {
-				if (checkBox1.Checked)
+				if (cbDeep.Checked)
 					(Program.OAuth2 != null ? new RGenerator(Program.OAuth2, sc) : new RGenerator(apikey.Text, sc)).Run(sett);
 				else
-					(Program.OAuth2 != null ? new RGenerator(Program.OAuth2, sc) : new Generator(apikey.Text, sc)).Run(sett);
+					(Program.OAuth2 != null ? new Generator(Program.OAuth2, sc) : new Generator(apikey.Text, sc)).Run(sett);
 			}
 		}
 
@@ -268,11 +268,11 @@ namespace LoggenCSG {
 		private void checkBox2_CheckedChanged(object sender, EventArgs e) {
 			nudMaxComment.Enabled = 
 				nudMaxPlus.Enabled = 
-				nudMaxReshare.Enabled = !checkBox2.Checked;
+				nudMaxReshare.Enabled = !cbFGraph.Checked;
 		}
 
 		private void checkBox1_CheckedChanged(object sender, EventArgs e) {
-			nudDeep.Enabled = checkBox1.Checked;
+			nudDeep.Enabled = cbDeep.Checked;
 		}
 	}
 }
