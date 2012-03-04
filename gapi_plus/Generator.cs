@@ -589,8 +589,9 @@ namespace LoggenCSG {
 		}
 
 		protected Dictionary<Visualizers.Types, Appender> loggers = null;
+		protected Dictionary<string, bool> users = null;
 
-		protected void doGenerate(GeneratorSetting setting, string pid, int depth = 0) {
+		protected virtual void doGenerate(GeneratorSetting setting, string pid, int depth = 0) {
 			if (string.IsNullOrWhiteSpace(pid) || setting == null)
 				return;
 
@@ -602,16 +603,10 @@ namespace LoggenCSG {
 			var step = setting.MaxResults / (double)100;
 			string nextPage = string.Empty;
 
-			var users = new Dictionary<string, bool>();
+			if(users == null)
+				users = new Dictionary<string, bool>();
 
 			users[pid] = true;
-
-			loggers = new Dictionary<Visualizers.Types, Appender>();
-			foreach (var log in setting.LogFiles)
-				if (setting.VisLogs.HasFlag(log.Key) && (!loggers.ContainsKey(log.Key) || loggers[log.Key] == null))
-					loggers[log.Key] = Visualizers.Loggers[log.Key]
-						.GetConstructor(new Type[] { typeof(string) })
-							.Invoke(new object[] { log.Value }) as Appender;
 
 			while (step != 0) {
 
@@ -817,7 +812,14 @@ namespace LoggenCSG {
 
 			var setting = insetting as GeneratorSetting;
 
-			var ids = setting.ProfileID.Split(new char[] { ';', ',' });
+			var ids = setting.ProfileID.Split(new char[] { ';', ',', '|' });
+
+			loggers = new Dictionary<Visualizers.Types, Appender>();
+			foreach (var log in setting.LogFiles)
+				if (setting.VisLogs.HasFlag(log.Key) && (!loggers.ContainsKey(log.Key) || loggers[log.Key] == null))
+					loggers[log.Key] = Visualizers.Loggers[log.Key]
+						.GetConstructor(new Type[] { typeof(string) })
+							.Invoke(new object[] { log.Value }) as Appender;
 
 			foreach (var pid in ids) {
 
