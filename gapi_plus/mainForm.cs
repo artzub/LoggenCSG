@@ -176,7 +176,7 @@ namespace LoggenCSG {
 			using (var sc = new StateControl()) {
 				sc.Dock = DockStyle.Fill;
 				//tableLayoutPanel1.Controls.Remove(apip);
-				tableLayoutPanel1.Controls.Add(sc, 1, 5);
+				tableLayoutPanel1.Controls.Add(sc, 1, 6);
 				Application.DoEvents();
 
 				btGen.Enabled = false;
@@ -231,7 +231,10 @@ namespace LoggenCSG {
 				MaxComments = Convert.ToInt32(nudMaxComment.Value),
 				MaxPluses = Convert.ToInt32(nudMaxPlus.Value),
 				MaxReshares = Convert.ToInt32(nudMaxReshare.Value),
-				Deep = cbDeep.Checked ? Convert.ToInt32(nudDeep.Value) : 0
+				Deep = cbDeep.Checked ? Convert.ToInt32(nudDeep.Value) : 0,
+				UseDateRange = cbDateRange.Checked,
+				DateFrom = dtpFrom.Value,
+				DateTo = dtpTo.Value
 			};
 
 			//UD
@@ -239,10 +242,7 @@ namespace LoggenCSG {
 				new FollowersGenerator(apikey.Text, sc).Run(sett);
 			}
 			else {
-				if (cbDeep.Checked)
-					(Program.OAuth2 != null ? new RGenerator(Program.OAuth2, sc) : new RGenerator(apikey.Text, sc)).Run(sett);
-				else
-					(Program.OAuth2 != null ? new Generator(Program.OAuth2, sc) : new Generator(apikey.Text, sc)).Run(sett);
+				(Program.OAuth2 != null ? new Generator(Program.OAuth2, sc) : new Generator(apikey.Text, sc)).Run(sett);
 			}
 		}
 
@@ -273,6 +273,11 @@ namespace LoggenCSG {
 
 		private void checkBox1_CheckedChanged(object sender, EventArgs e) {
 			nudDeep.Enabled = cbDeep.Checked;
+		}
+
+		private void cbDateRange_CheckedChanged(object sender, EventArgs e) {
+			tlpDates.Enabled = cbDateRange.Checked;
+			nudMaxRes.Enabled = !cbDateRange.Checked;
 		}
 	}
 }

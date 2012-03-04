@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using Core;
+using System;
 
 namespace LoggenCSG {
 	internal class GeneratorSetting : Core.GeneratorSetting {
@@ -55,6 +56,21 @@ namespace LoggenCSG {
 		}
 
 		public int Deep {
+			get;
+			set;
+		}
+
+		public bool UseDateRange {
+			get;
+			set;
+		}
+
+		public DateTime DateFrom {
+			get;
+			set;
+		}
+
+		public DateTime DateTo {
 			get;
 			set;
 		}

@@ -65,6 +65,14 @@
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.tlpDates = new System.Windows.Forms.TableLayoutPanel();
+			this.cbDateRange = new System.Windows.Forms.CheckBox();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.panel2 = new System.Windows.Forms.Panel();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
+			this.dtpFrom = new System.Windows.Forms.DateTimePicker();
+			this.dtpTo = new System.Windows.Forms.DateTimePicker();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.nudDeep)).BeginInit();
@@ -83,6 +91,9 @@
 			this.tpGAnalytics.SuspendLayout();
 			this.tpLastfm.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
+			this.tlpDates.SuspendLayout();
+			this.panel1.SuspendLayout();
+			this.panel2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// btGen
@@ -92,7 +103,7 @@
 			this.btGen.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.btGen.ImageIndex = 0;
 			this.btGen.ImageList = this.il16;
-			this.btGen.Location = new System.Drawing.Point(3, 126);
+			this.btGen.Location = new System.Drawing.Point(3, 168);
 			this.btGen.Name = "btGen";
 			this.btGen.Size = new System.Drawing.Size(152, 28);
 			this.btGen.TabIndex = 0;
@@ -114,21 +125,24 @@
 			this.tableLayoutPanel1.ColumnCount = 2;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 158F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Controls.Add(this.cbFGraph, 0, 3);
-			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 2);
+			this.tableLayoutPanel1.Controls.Add(this.cbDateRange, 0, 2);
+			this.tableLayoutPanel1.Controls.Add(this.cbFGraph, 0, 4);
+			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 3);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 1);
-			this.tableLayoutPanel1.Controls.Add(this.tabControl2, 0, 6);
+			this.tableLayoutPanel1.Controls.Add(this.tabControl2, 0, 7);
 			this.tableLayoutPanel1.Controls.Add(this.tbID, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.profileId, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
-			this.tableLayoutPanel1.Controls.Add(this.btGen, 0, 5);
-			this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 4);
-			this.tableLayoutPanel1.Controls.Add(this.apip, 1, 5);
-			this.tableLayoutPanel1.Controls.Add(this.label5, 1, 3);
+			this.tableLayoutPanel1.Controls.Add(this.btGen, 0, 6);
+			this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 5);
+			this.tableLayoutPanel1.Controls.Add(this.apip, 1, 6);
+			this.tableLayoutPanel1.Controls.Add(this.label5, 1, 4);
+			this.tableLayoutPanel1.Controls.Add(this.tlpDates, 1, 2);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 7;
+			this.tableLayoutPanel1.RowCount = 8;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
@@ -136,7 +150,8 @@
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(647, 492);
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(647, 618);
 			this.tableLayoutPanel1.TabIndex = 1;
 			// 
 			// cbFGraph
@@ -144,7 +159,7 @@
 			this.cbFGraph.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.cbFGraph.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.cbFGraph.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.cbFGraph.Location = new System.Drawing.Point(3, 87);
+			this.cbFGraph.Location = new System.Drawing.Point(3, 115);
 			this.cbFGraph.Name = "cbFGraph";
 			this.cbFGraph.Size = new System.Drawing.Size(152, 22);
 			this.cbFGraph.TabIndex = 9;
@@ -164,7 +179,7 @@
 			this.tableLayoutPanel3.Controls.Add(this.nudDeep, 0, 0);
 			this.tableLayoutPanel3.Controls.Add(this.cbDeep, 0, 0);
 			this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 56);
+			this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 84);
 			this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
 			this.tableLayoutPanel3.Name = "tableLayoutPanel3";
 			this.tableLayoutPanel3.RowCount = 1;
@@ -304,10 +319,10 @@
 			this.tabControl2.Controls.Add(this.tabPage4);
 			this.tabControl2.Controls.Add(this.tabPage3);
 			this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl2.Location = new System.Drawing.Point(3, 160);
+			this.tabControl2.Location = new System.Drawing.Point(3, 202);
 			this.tabControl2.Name = "tabControl2";
 			this.tabControl2.SelectedIndex = 0;
-			this.tabControl2.Size = new System.Drawing.Size(641, 329);
+			this.tabControl2.Size = new System.Drawing.Size(641, 413);
 			this.tabControl2.TabIndex = 6;
 			// 
 			// tabPage4
@@ -316,7 +331,7 @@
 			this.tabPage4.Location = new System.Drawing.Point(4, 22);
 			this.tabPage4.Name = "tabPage4";
 			this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage4.Size = new System.Drawing.Size(633, 303);
+			this.tabPage4.Size = new System.Drawing.Size(633, 387);
 			this.tabPage4.TabIndex = 1;
 			this.tabPage4.Text = "Rules";
 			this.tabPage4.UseVisualStyleBackColor = true;
@@ -336,7 +351,7 @@
 			this.dgRules.Location = new System.Drawing.Point(3, 3);
 			this.dgRules.Name = "dgRules";
 			this.dgRules.RowHeadersWidth = 20;
-			this.dgRules.Size = new System.Drawing.Size(627, 297);
+			this.dgRules.Size = new System.Drawing.Size(627, 381);
 			this.dgRules.TabIndex = 0;
 			this.dgRules.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgRules_CellValueChanged);
 			// 
@@ -375,7 +390,7 @@
 			this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.richTextBox1.Location = new System.Drawing.Point(10, 10);
 			this.richTextBox1.Name = "richTextBox1";
-			this.richTextBox1.Size = new System.Drawing.Size(613, 269);
+			this.richTextBox1.Size = new System.Drawing.Size(613, 283);
 			this.richTextBox1.TabIndex = 0;
 			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
 			// 
@@ -415,9 +430,9 @@
 			this.groupBox1.AutoSize = true;
 			this.tableLayoutPanel1.SetColumnSpan(this.groupBox1, 2);
 			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBox1.Location = new System.Drawing.Point(3, 115);
+			this.groupBox1.Location = new System.Drawing.Point(3, 143);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(641, 5);
+			this.groupBox1.Size = new System.Drawing.Size(641, 19);
 			this.groupBox1.TabIndex = 3;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Save to";
@@ -427,7 +442,7 @@
 			this.apip.Controls.Add(this.apikey);
 			this.apip.Controls.Add(this.label1);
 			this.apip.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.apip.Location = new System.Drawing.Point(161, 126);
+			this.apip.Location = new System.Drawing.Point(161, 168);
 			this.apip.Name = "apip";
 			this.apip.Padding = new System.Windows.Forms.Padding(3);
 			this.apip.Size = new System.Drawing.Size(483, 28);
@@ -458,7 +473,7 @@
 			// 
 			this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.label5.Location = new System.Drawing.Point(161, 84);
+			this.label5.Location = new System.Drawing.Point(161, 112);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(483, 28);
 			this.label5.TabIndex = 10;
@@ -475,7 +490,7 @@
 			this.tcMain.Location = new System.Drawing.Point(0, 24);
 			this.tcMain.Name = "tcMain";
 			this.tcMain.SelectedIndex = 0;
-			this.tcMain.Size = new System.Drawing.Size(661, 525);
+			this.tcMain.Size = new System.Drawing.Size(661, 651);
 			this.tcMain.TabIndex = 1;
 			// 
 			// tpGPlus
@@ -485,7 +500,7 @@
 			this.tpGPlus.Location = new System.Drawing.Point(4, 23);
 			this.tpGPlus.Name = "tpGPlus";
 			this.tpGPlus.Padding = new System.Windows.Forms.Padding(3);
-			this.tpGPlus.Size = new System.Drawing.Size(653, 498);
+			this.tpGPlus.Size = new System.Drawing.Size(653, 624);
 			this.tpGPlus.TabIndex = 0;
 			this.tpGPlus.Text = "Google+";
 			this.tpGPlus.UseVisualStyleBackColor = true;
@@ -583,12 +598,100 @@
 			this.aboutToolStripMenuItem.Text = "&About ...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
+			// tlpDates
+			// 
+			this.tlpDates.ColumnCount = 2;
+			this.tlpDates.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tlpDates.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tlpDates.Controls.Add(this.panel1, 0, 0);
+			this.tlpDates.Controls.Add(this.panel2, 1, 0);
+			this.tlpDates.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tlpDates.Enabled = false;
+			this.tlpDates.Location = new System.Drawing.Point(158, 56);
+			this.tlpDates.Margin = new System.Windows.Forms.Padding(0);
+			this.tlpDates.Name = "tlpDates";
+			this.tlpDates.RowCount = 1;
+			this.tlpDates.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tlpDates.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tlpDates.Size = new System.Drawing.Size(489, 28);
+			this.tlpDates.TabIndex = 12;
+			// 
+			// cbDateRange
+			// 
+			this.cbDateRange.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.cbDateRange.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.cbDateRange.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.cbDateRange.Location = new System.Drawing.Point(3, 59);
+			this.cbDateRange.Name = "cbDateRange";
+			this.cbDateRange.Size = new System.Drawing.Size(152, 22);
+			this.cbDateRange.TabIndex = 13;
+			this.cbDateRange.Text = "Date range";
+			this.cbDateRange.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.cbDateRange.UseVisualStyleBackColor = true;
+			this.cbDateRange.CheckedChanged += new System.EventHandler(this.cbDateRange_CheckedChanged);
+			// 
+			// panel1
+			// 
+			this.panel1.Controls.Add(this.dtpFrom);
+			this.panel1.Controls.Add(this.label6);
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel1.Location = new System.Drawing.Point(3, 3);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(238, 22);
+			this.panel1.TabIndex = 0;
+			// 
+			// panel2
+			// 
+			this.panel2.Controls.Add(this.dtpTo);
+			this.panel2.Controls.Add(this.label7);
+			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel2.Location = new System.Drawing.Point(247, 3);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(239, 22);
+			this.panel2.TabIndex = 1;
+			// 
+			// label6
+			// 
+			this.label6.Dock = System.Windows.Forms.DockStyle.Left;
+			this.label6.Location = new System.Drawing.Point(0, 0);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(35, 22);
+			this.label6.TabIndex = 0;
+			this.label6.Text = "from:";
+			this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// label7
+			// 
+			this.label7.Dock = System.Windows.Forms.DockStyle.Left;
+			this.label7.Location = new System.Drawing.Point(0, 0);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(35, 22);
+			this.label7.TabIndex = 1;
+			this.label7.Text = "to:";
+			this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// dtpFrom
+			// 
+			this.dtpFrom.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dtpFrom.Location = new System.Drawing.Point(35, 0);
+			this.dtpFrom.Name = "dtpFrom";
+			this.dtpFrom.Size = new System.Drawing.Size(203, 20);
+			this.dtpFrom.TabIndex = 1;
+			// 
+			// dtpTo
+			// 
+			this.dtpTo.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dtpTo.Location = new System.Drawing.Point(35, 0);
+			this.dtpTo.Name = "dtpTo";
+			this.dtpTo.Size = new System.Drawing.Size(204, 20);
+			this.dtpTo.TabIndex = 2;
+			// 
 			// mainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
-			this.ClientSize = new System.Drawing.Size(661, 549);
+			this.ClientSize = new System.Drawing.Size(661, 675);
 			this.Controls.Add(this.tcMain);
 			this.Controls.Add(this.menuStrip1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -618,6 +721,9 @@
 			this.tpLastfm.ResumeLayout(false);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
+			this.tlpDates.ResumeLayout(false);
+			this.panel1.ResumeLayout(false);
+			this.panel2.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -665,6 +771,14 @@
 		private System.Windows.Forms.NumericUpDown nudDeep;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
 		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.CheckBox cbDateRange;
+		private System.Windows.Forms.TableLayoutPanel tlpDates;
+		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Panel panel2;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.DateTimePicker dtpFrom;
+		private System.Windows.Forms.DateTimePicker dtpTo;
 	}
 }
 
