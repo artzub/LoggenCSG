@@ -176,7 +176,7 @@ namespace LoggenCSG {
 			using (var sc = new StateControl()) {
 				sc.Dock = DockStyle.Fill;
 				//tableLayoutPanel1.Controls.Remove(apip);
-				tableLayoutPanel1.Controls.Add(sc, 1, 5);
+				tlpGooglePlus.Controls.Add(sc, 1, 6);
 				Application.DoEvents();
 
 				btGen.Enabled = false;
@@ -208,7 +208,7 @@ namespace LoggenCSG {
 				}
 				finally {
 					btGen.Enabled = true;
-					tableLayoutPanel1.Controls.Remove(sc);
+					tlpGooglePlus.Controls.Remove(sc);
 					//tableLayoutPanel1.Controls.Add(apip, 1, 3);
 				}
 			}
@@ -219,30 +219,41 @@ namespace LoggenCSG {
 				ProfileID = /*"101113754039426612780"*/idProfile,
 				Rules = rules,
 				VisLogs = (Visualizers.Types)flags,
-				LogFiles = filenames,
-				Methods = new Dictionary<Visualizers.Types, GeneratorLogsMeth> {
+				LogFiles = filenames,				
+				MaxResults = Convert.ToInt32(nudMaxRes.Value),
+				MaxComments = Convert.ToInt32(nudMaxComment.Value),
+				MaxPluses = Convert.ToInt32(nudMaxPlus.Value),
+				MaxReshares = Convert.ToInt32(nudMaxReshare.Value),
+				Deep = cbDeep.Checked ? Convert.ToInt32(nudDeep.Value) : 0,
+				UseDateRange = cbDateRange.Checked,
+				DateFrom = dtpFrom.Value,
+				DateTo = dtpTo.Value
+			};
+
+			if (tcGooglePlus.SelectedTab == tpGPUsers) {
+				sett.Methods = new Dictionary<Visualizers.Types, GeneratorLogsMeth> {
 					//UD
 					{Visualizers.Code_swarm, UDGenerator.LogGen},
 					{Visualizers.Gource, Generator.LogGen},
 					{Visualizers.Logstalgia, Generator.LogGen},
 					{Visualizers.Gephi, Generator.LogGen},
-				},
-				MaxResults = Convert.ToInt32(nudMaxRes.Value),
-				MaxComments = Convert.ToInt32(nudMaxComment.Value),
-				MaxPluses = Convert.ToInt32(nudMaxPlus.Value),
-				MaxReshares = Convert.ToInt32(nudMaxReshare.Value),
-				Deep = cbDeep.Checked ? Convert.ToInt32(nudDeep.Value) : 0
-			};
-
-			//UD
-			if (cbFGraph.Checked) {
-				new FollowersGenerator(apikey.Text, sc).Run(sett);
+				};
+				if (cbFGraph.Checked) {
+					new FollowersGenerator(apikey.Text, sc).Run(sett);
+				}
+				else {
+					(Program.OAuth2 != null ? new Generator(Program.OAuth2, sc) : new Generator(apikey.Text, sc)).Run(sett);
+				}
 			}
 			else {
-				if (cbDeep.Checked)
-					(Program.OAuth2 != null ? new RGenerator(Program.OAuth2, sc) : new RGenerator(apikey.Text, sc)).Run(sett);
-				else
-					(Program.OAuth2 != null ? new Generator(Program.OAuth2, sc) : new Generator(apikey.Text, sc)).Run(sett);
+				sett.Methods = new Dictionary<Visualizers.Types, GeneratorLogsMeth> {
+					//UD
+					{Visualizers.Code_swarm, WordsSearchGenerator.LogGen},
+					{Visualizers.Gource, WordsSearchGenerator.LogGen},
+					{Visualizers.Logstalgia, WordsSearchGenerator.LogGen},
+					{Visualizers.Gephi, WordsSearchGenerator.LogGen},
+				};
+				(Program.OAuth2 != null ? new WordsSearchGenerator(Program.OAuth2, sc) : new WordsSearchGenerator(apikey.Text, sc)).Run(sett);
 			}
 		}
 
@@ -273,6 +284,42 @@ namespace LoggenCSG {
 
 		private void checkBox1_CheckedChanged(object sender, EventArgs e) {
 			nudDeep.Enabled = cbDeep.Checked;
+		}
+
+		private void cbDateRange_CheckedChanged(object sender, EventArgs e) {
+			tlpDates.Enabled = cbDateRange.Checked;
+			nudMaxRes.Enabled = !cbDateRange.Checked;
+		}
+
+		private void tcMain_SelectedIndexChanged(object sender, EventArgs e) {
+		}
+
+		private void tcGooglePlus_SelectedIndexChanged(object sender, EventArgs e) {
+			switch (tcGooglePlus.SelectedTab.Name) {
+				case "tpGPUsers":
+					tpGPWords.Controls.Remove(tlpGooglePlus);
+					tlpGooglePlus.RowStyles[1].Height = 28;
+					tlpGooglePlus.RowStyles[3].Height = 28;
+					tlpGooglePlus.RowStyles[4].Height = 28;
+					profileId.Text = "PROFILE ID:";
+					cbDateRange.Enabled = true;
+					cbDateRange.Checked = (bool)cbDateRange.Tag;					
+					tpGPUsers.Controls.Add(tlpGooglePlus);
+					break;
+				case "tpGPWords":
+					tpGPUsers.Controls.Remove(tlpGooglePlus);
+					tlpGooglePlus.RowStyles[1].Height = 0;
+					tlpGooglePlus.RowStyles[4].Height = 0;
+					tlpGooglePlus.RowStyles[3].Height = 0;
+					profileId.Text = "Search words or hash-tag:";
+					cbDateRange.Tag = cbDateRange.Checked;
+					cbDateRange.Checked = true;
+					cbDateRange.Enabled = false;
+					tpGPWords.Controls.Add(tlpGooglePlus);
+					break;
+				default:
+					break;
+			}
 		}
 	}
 }

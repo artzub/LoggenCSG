@@ -56,6 +56,10 @@
     <ApplicationIcon>google-log-gen.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Data.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraEditors.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DotNetOpenAuth">
       <HintPath>..\..\google-api-dotnet-client.samples\Lib\ThirdParty\DotNetOpenAuth.dll</HintPath>
     </Reference>
@@ -88,7 +92,6 @@
     <Compile Include="OutFilePanel.Designer.cs">
       <DependentUpon>OutFilePanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="RGenerator.cs" />
     <Compile Include="UDGenerator.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="GeneratorSetting.cs" />
@@ -102,6 +105,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleName.cs" />
+    <Compile Include="WordsSearchGenerator.cs" />
     <EmbeddedResource Include="mainForm.resx">
       <DependentUpon>mainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -119,7 +123,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="LICENSE" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

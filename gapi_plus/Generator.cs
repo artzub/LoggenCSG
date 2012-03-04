@@ -589,55 +589,54 @@ namespace LoggenCSG {
 		}
 
 		protected Dictionary<Visualizers.Types, Appender> loggers = null;
+		protected Dictionary<string, bool> users = null;
 
-		protected override object GenerateLog(Core.GeneratorSetting insetting = null) {
+		protected virtual void doGenerate(GeneratorSetting setting, string pid, int depth = 0) {
+			if (string.IsNullOrWhiteSpace(pid) || setting == null)
+				return;
 
-			var setting = insetting as GeneratorSetting;
+			var acts = Service.Activities.List(pid, setting.Collection);
 
-			var ids = setting.ProfileID.Split(new char[] { ';', ',' });
+			if (setting.UseDateRange)
+				setting.MaxResults = 100;
 
-			foreach (var pid in ids) {
+			var step = setting.MaxResults / (double)100;
+			string nextPage = string.Empty;
 
-				var acts = Service.Activities.List(pid, setting.Collection);
+			if(users == null)
+				users = new Dictionary<string, bool>();
 
-				var step = setting.MaxResults / (double)100;
-				string nextPage = string.Empty;
+			users[pid] = true;
 
-				if (loggers == null)
-					loggers = new Dictionary<Visualizers.Types, Appender>();
-				foreach (var log in setting.LogFiles) {
-					try {
-						if (setting.VisLogs.HasFlag(log.Key) && (!loggers.ContainsKey(log.Key) || loggers[log.Key] == null))
-							loggers[log.Key] = Visualizers.Loggers[log.Key]
-								.GetConstructor(new Type[] { typeof(string) })
-									.Invoke(new object[] { log.Value }) as Appender;
-					}
-					catch (Exception e) {
-						WriteLog(e, this);
-					}
+			while (step != 0) {
+
+				var nextResults = 100;
+				if (step-- < 1) {
+					nextResults = (int)((step + 1) * 100);
+					step = 0;
 				}
 
-				while (step != 0) {
+				step = step == 0 && setting.UseDateRange ? 1 : step;
 
-					var nextResults = 100;
-					if (step-- < 1) {
-						nextResults = (int)((step + 1) * 100);
-						step = 0;
-					}
+				acts.MaxResults = nextResults;
+				acts.PageToken = nextPage;
 
-					acts.MaxResults = nextResults;
-					acts.PageToken = nextPage;
+				if (haveStater) {
+					Stater.MaxPosition = nextResults;
+					Stater.SetState("Load feeds ...");
+				}
 
-					if (haveStater) {
-						Stater.MaxPosition = nextResults;
-						Stater.SetState("Load feeds ...");
-					}
+				Dictionary<Activity, ActivityCont> dicdate = null;
 
-					Dictionary<Activity, ActivityCont> dicdate = null;
+				try {
+					var feed = acts.Fetch();
 
-					try {
-						var feed = acts.Fetch();
+					if (dicdate == null)
+						dicdate = new Dictionary<Activity, ActivityCont>();
+					dicdate.Clear();
 
+					nextPage = null;
+					if (feed.Error == null) {
 						nextPage = feed.NextPageToken;
 						if (string.IsNullOrWhiteSpace(nextPage)) {
 							step = 0;
@@ -649,84 +648,200 @@ namespace LoggenCSG {
 							Stater.SetState("Parsing ...");
 						}
 
-						if (dicdate == null)
-							dicdate = new Dictionary<Activity, ActivityCont>();
-						dicdate.Clear();
+						foreach (var item in feed.Items) {
 
-						if (feed.Items.Count > 0) {
-							foreach (var item in feed.Items) {
+							if (setting.UseDateRange && !InRange(setting.DateFrom, setting.DateTo, item.Published)) {
+								if (IsOutLeft(setting.DateFrom, item.Published)) {
+									step = 0;
+									break;
+								}
+								continue;
+							}
 
-								var ditem = dicdate[item] = new ActivityCont();
+							var ditem = dicdate[item] = new ActivityCont();
 
-								if (item.Object != null) {
+							if (item.Object != null) {
 
-									if (item.Verb == "share" && 
-									!string.IsNullOrWhiteSpace(item.Object.Id)) {
-										try {
-											ditem.Share = Service.Activities.Get(item.Object.Id).Fetch();
-										}
-										catch (Exception e) {
-											WriteLog(e, this);
-										}
+								if (item.Verb == "share" && 
+										!string.IsNullOrWhiteSpace(item.Object.Id)) {
+									try {
+										ditem.Share = Service.Activities.Get(item.Object.Id).Fetch();
 									}
-
-									if (item.Object.Replies.TotalItems > 0) {
-										var plser = Service.Comments.List(item.Id);
-										plser.MaxResults = setting.MaxComments;
-										try {
-											var listpl = plser.Fetch();
-
-											ditem.Comments = listpl.Items;
-										}
-										catch (Exception e) {
-											WriteLog(e, this);
-										}
-									}
-
-									if (item.Object.Plusoners.TotalItems > 0) {
-										var plser = Service.People.ListByActivity(item.Id, PeopleResource.Collection.Plusoners);
-										plser.MaxResults = setting.MaxPluses;
-
-										try {
-											var listpl = plser.Fetch();
-
-											ditem.Plusers = listpl.Items;
-										}
-										catch (Exception e) {
-											WriteLog(e, this);
-										}
-									}
-
-									if (item.Object.Resharers.TotalItems > 0) {
-										var plser = Service.People.ListByActivity(item.Id, PeopleResource.Collection.Resharers);
-										plser.MaxResults = setting.MaxReshares;
-
-										try {
-											var listpl = plser.Fetch();
-
-											ditem.Sharers = listpl.Items;
-										}
-										catch (Exception e) {
-											WriteLog(e, this);
-										}
+									catch (Exception e) {
+										WriteLog(e, this);
 									}
 								}
 
-								if (haveStater)
-									Stater.Inc();
+								if (item.Object.Replies.TotalItems > 0) {
+									var plser = Service.Comments.List(item.Id);
+									plser.MaxResults = setting.MaxComments;
+									try {
+										var listpl = plser.Fetch();
+
+										ditem.Comments = listpl.Items;
+									}
+									catch (Exception e) {
+										WriteLog(e, this);
+									}
+								}
+
+								if (item.Object.Plusoners.TotalItems > 0) {
+									var plser = Service.People.ListByActivity(item.Id, PeopleResource.Collection.Plusoners);
+									plser.MaxResults = setting.MaxPluses;
+
+									try {
+										var listpl = plser.Fetch();
+
+										ditem.Plusers = listpl.Items;
+									}
+									catch (Exception e) {
+										WriteLog(e, this);
+									}
+								}
+
+								if (item.Object.Resharers.TotalItems > 0) {
+									var plser = Service.People.ListByActivity(item.Id, PeopleResource.Collection.Resharers);
+									plser.MaxResults = setting.MaxReshares;
+
+									try {
+										var listpl = plser.Fetch();
+
+										ditem.Sharers = listpl.Items;
+									}
+									catch (Exception e) {
+										WriteLog(e, this);
+									}
+								}
 							}
 
-							GenerateLogs(dicdate, setting, loggers);
+							if (haveStater)
+								Stater.Inc();
+						}
+
+						GenerateLogs(dicdate, setting, loggers);
+
+						if (depth > 0) {
+
+							foreach (var ditem in dicdate) {
+								try {
+									var share = ditem.Value.Share;
+									if (share != null) {
+										if (share.Actor != null &&
+										!string.IsNullOrWhiteSpace(share.Actor.Id) &&
+										!users.ContainsKey(share.Actor.Id)) {
+											users[share.Actor.Id] = true;
+											doGenerate(setting, share.Actor.Id, depth - 1);
+										}
+									}
+								}
+								catch (Exception e) {
+									WriteLog(e, this);
+								}
+
+
+								try {
+									var coms = ditem.Value.Comments;
+
+									if (coms != null) {
+										foreach (var sitem in coms) {
+											if (!users.ContainsKey(sitem.Actor.Id)) {
+												users[sitem.Actor.Id] = true;
+												doGenerate(setting, sitem.Actor.Id, depth - 1);
+											}
+											if (haveStater)
+												Stater.Inc();
+										}
+									}
+								}
+								catch (Exception e) {
+									WriteLog(e, this);
+								}
+
+								try {
+									var pluses = ditem.Value.Plusers;
+									if (pluses != null) {
+										foreach (var sitem in pluses) {
+											if (!users.ContainsKey(sitem.Id)) {
+												users[sitem.Id] = true;
+												doGenerate(setting, sitem.Id, depth - 1);
+											}
+											if (haveStater)
+												Stater.Inc();
+										}
+									}
+								}
+								catch (Exception e) {
+									WriteLog(e, this);
+								}
+
+								try {
+									var shares = ditem.Value.Sharers;
+									if (shares != null) {
+										foreach (var sitem in shares) {
+											if (!users.ContainsKey(sitem.Id)) {
+												users[sitem.Id] = true;
+												doGenerate(setting, sitem.Id, depth - 1);
+											}
+											if (haveStater)
+												Stater.Inc();
+										}
+									}
+								}
+								catch (Exception e) {
+									WriteLog(e, this);
+								}
+							}
+
+							if (haveStater)
+								Stater.Inc();
 						}
 					}
-					catch (Exception e) {
-						WriteLog(e, this);
-						e.ShowError();
-						step = 0;
+					else {
+						WriteLog(feed.Error.ToString(), this);
 					}
 				}
+				catch (Exception e) {
+					WriteLog(e, this);
+					e.ShowError();
+					step = 0;
+				}
+			}
+		}
+
+		protected override object GenerateLog(Core.GeneratorSetting insetting = null) {
+
+			var setting = insetting as GeneratorSetting;
+
+			var ids = setting.ProfileID.Split(new char[] { ';', ',', '|' });
+
+			loggers = new Dictionary<Visualizers.Types, Appender>();
+			foreach (var log in setting.LogFiles)
+				if (setting.VisLogs.HasFlag(log.Key) && (!loggers.ContainsKey(log.Key) || loggers[log.Key] == null))
+					loggers[log.Key] = Visualizers.Loggers[log.Key]
+						.GetConstructor(new Type[] { typeof(string) })
+							.Invoke(new object[] { log.Value }) as Appender;
+
+			foreach (var pid in ids) {
+
+				doGenerate(setting, pid, setting.Deep);
+
 			}
 			return true;
+		}
+
+		protected bool InRange(DateTime from, DateTime to, string current) {
+			var date = DateTime.MinValue;
+			return DateTime.TryParse(current, out date) && (from <= date && date <= to);
+		}
+
+		protected bool IsOutLeft(DateTime from, string current) {
+			var date = DateTime.MinValue;
+			return DateTime.TryParse(current, out date) && (from > date);
+		}
+
+		protected bool IsOutRight(DateTime to, string current) {
+			var date = DateTime.MinValue;
+			return DateTime.TryParse(current, out date) && (to < date);
 		}
 
 		public void Dispose() {
