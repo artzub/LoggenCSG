@@ -226,8 +226,8 @@ namespace LoggenCSG {
 				MaxReshares = Convert.ToInt32(nudMaxReshare.Value),
 				Deep = cbDeep.Checked ? Convert.ToInt32(nudDeep.Value) : 0,
 				UseDateRange = cbDateRange.Checked,
-				DateFrom = dtpFrom.Value,
-				DateTo = dtpTo.Value
+				DateFrom = Convert.ToDateTime(dtpFrom.Value.Date),
+				DateTo = Convert.ToDateTime(dtpTo.Value.AddDays(1).Date)
 			};
 
 			if (tcGooglePlus.SelectedTab == tpGPUsers) {

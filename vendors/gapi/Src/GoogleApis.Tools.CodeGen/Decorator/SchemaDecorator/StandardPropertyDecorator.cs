@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,14 @@ namespace Google.Apis.Tools.CodeGen.Decorator.SchemaDecorator
     {
         private static readonly ILogger logger = ApplicationContext.Logger.ForType<StandardPropertyDecorator>();
 
+        private readonly IEnumerable<IPropertyDecorator> propertyDecorators;
+
+        public StandardPropertyDecorator(params IPropertyDecorator[] propertyDecorators)
+        {
+            propertyDecorators.ThrowIfNull("propertyDecorators");
+            this.propertyDecorators = propertyDecorators;
+        }
+
         #region INestedClassSchemaDecorator Members
 
         public void DecorateInternalClass(CodeTypeDeclaration typeDeclaration,
@@ -46,9 +55,13 @@ namespace Google.Apis.Tools.CodeGen.Decorator.SchemaDecorator
             schema.ThrowIfNull("schema");
             implDetails.ThrowIfNull("details");
             internalClassProvider.ThrowIfNull("internalClassProvider");
+
+            SchemaImplementationDetails details = implDetails[schema];
+
             typeDeclaration.Members.AddRange(
-                GenerateAllProperties(name, schema, implDetails, internalClassProvider, typeDeclaration.Name).ToArray(
-                    ));
+                GenerateAllProperties(name, schema, implDetails, internalClassProvider, 
+                                      typeDeclaration.Name)
+                     .ToArray());
         }
 
         #endregion
@@ -63,6 +76,7 @@ namespace Google.Apis.Tools.CodeGen.Decorator.SchemaDecorator
             typeDeclaration.ThrowIfNull("typeDeclatation");
             schema.ThrowIfNull("schema");
             implDetails.ThrowIfNull("implDetails");
+            
             typeDeclaration.Members.AddRange(
                 GenerateAllProperties(
                     schema.Name, schema.SchemaDetails, implDetails, internalClassProvider, typeDeclaration.Name).
@@ -83,7 +97,6 @@ namespace Google.Apis.Tools.CodeGen.Decorator.SchemaDecorator
             name.ThrowIfNullOrEmpty("name");
             logger.Debug("Adding properties for {0}", name);
 
-
             var fields = new List<CodeMemberProperty>();
 
             if (schema.Properties.IsNullOrEmpty())
@@ -102,6 +115,12 @@ namespace Google.Apis.Tools.CodeGen.Decorator.SchemaDecorator
                 CodeMemberProperty property = GenerateProperty(
                     propertyPair.Key, propertyPair.Value, details, index++, internalClassProvider,
                     allUsedWordsInContext.Except(new[] { propertyPair.Key }));
+
+                foreach (var decorator in propertyDecorators)
+                {
+                    decorator.DecorateProperty(property, propertyPair);
+                }
+
                 fields.Add(property);
             }
             return fields;

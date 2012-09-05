@@ -29,13 +29,12 @@ using Newtonsoft.Json;
 
 namespace Google.Apis.Discovery
 {
-
     #region BaseService
 
     /// <summary>
     /// Represents the basic implementation of a service
     /// </summary>
-    public abstract class BaseService : IService
+    public abstract class BaseService : ServiceObject, IService
     {
         /// <summary>
         /// Name of the method used for serialization (object -> json)
@@ -60,10 +59,11 @@ namespace Google.Apis.Discovery
         private ISerializer serializer;
         private bool gzipSupport = true;
 
-        internal BaseService(JsonDictionary values, BaseFactoryParameters param) : this()
+        internal BaseService(IServiceFactory factory, JsonDictionary values, FactoryParameters param)
+            : this(factory)
         {
             values.ThrowIfNull("values");
-            param.ThrowIfNull("param");
+            param = param ?? new FactoryParameters();
 
             // Set required properties
             Version = values.GetMandatoryValue<string>("version");
@@ -90,7 +90,8 @@ namespace Google.Apis.Discovery
             BasePath = param.BasePath;
         }
 
-        private BaseService()
+        private BaseService(IServiceFactory factory)
+            : base(factory)
         {
             Serializer = new NewtonsoftJsonSerializer();
         }
@@ -114,7 +115,7 @@ namespace Google.Apis.Discovery
         public string DocumentationLink { get; private set; }
         public string Protocol { get; private set; }
 
-        public abstract DiscoveryVersion DiscoveryVersion { get; }
+        public DiscoveryVersion DiscoveryVersion { get { return Factory.Version; } }
 
         public Uri BaseUri
         {
@@ -249,7 +250,7 @@ namespace Google.Apis.Discovery
           var paramsObj = information.GetValueAsNull("parameters") as JsonDictionary;
           if (paramsObj != null)
           {
-            return paramsObj.Select(p => ParameterFactory.GetParameter(DiscoveryVersion, p))
+            return paramsObj.Select(p => CreateParameter(p))
               .ToDictionary(p => p.Name);
           }
           else
@@ -425,6 +426,8 @@ namespace Google.Apis.Discovery
         {
             js.ThrowIfNull("values");
 
+            RemoveAnnotations(js, 0);
+
             var working = new Dictionary<string, ISchema>();
 
             var resolver = new FutureJsonSchemaResolver();
@@ -445,14 +448,25 @@ namespace Google.Apis.Discovery
         }
 
         /// <summary>
-        /// Creates a version specific resource containing 
-        /// out of the specified KeyValuePair
+        /// Newtonsoft JSon parser fails to parse json containing a "$ref" and an adjacent
+        /// object property. Google service discovery currently generates this in the "annotations"
+        /// property.
         /// </summary>
-        /// <param name="kvp"></param>
-        /// <returns></returns>
-        public virtual IResource CreateResource(KeyValuePair<string, object> kvp)
+        /// <param name="js"></param>
+        /// <param name="depth"></param>
+        internal static void RemoveAnnotations(JsonDictionary js, int depth)
         {
-            return new ResourceV1_0(kvp);
+            if (js.ContainsKey("$ref") && js.ContainsKey("annotations") && depth >= 3)
+            {
+                js.Remove("annotations");
+            }
+
+            foreach (var jd in js.Values
+                .Where(o => o is JsonDictionary)
+                .Select(o => o as JsonDictionary))
+            {
+                RemoveAnnotations(jd, depth + 1);
+            }
         }
 
         /// <summary>
@@ -498,19 +512,14 @@ namespace Google.Apis.Discovery
         /// <summary>
         /// Creates a v1.0 service
         /// </summary>
-        public ServiceV1_0(FactoryParameterV1_0 param, JsonDictionary values)
-            : base(values, param)
+        public ServiceV1_0(IServiceFactory factory, JsonDictionary values, FactoryParameters param)
+            : base(factory, values, param)
         {
             // If no BasePath has been set, then retrieve it from the json document
             if (BasePath.IsNullOrEmpty())
             {
                 BasePath = information.GetMandatoryValue<string>(BasePathField);
             }
-        }
-
-        public override DiscoveryVersion DiscoveryVersion
-        {
-            get { return DiscoveryVersion.Version_1_0; }
         }
     }
 
@@ -528,24 +537,14 @@ namespace Google.Apis.Discovery
         /// <summary>
         /// Creates a v0.3 service
         /// </summary>
-        public ServiceV0_3(FactoryParameterV0_3 param, JsonDictionary values)
-            : base(values, param)
+        public ServiceV0_3(IServiceFactory factory, JsonDictionary values, FactoryParameters param)
+            : base(factory, values, param)
         {
             // If no BasePath has been set, then retrieve it from the json document
             if (BasePath.IsNullOrEmpty())
             {
                 BasePath = information.GetMandatoryValue<string>(RestBasePathField);
             }
-        }
-
-        public override DiscoveryVersion DiscoveryVersion
-        {
-            get { return DiscoveryVersion.Version_0_3; }
-        }
-
-        public override IResource CreateResource(KeyValuePair<string, object> kvp)
-        {
-            return new ResourceV0_3(kvp);
         }
     }
 

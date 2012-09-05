@@ -26,6 +26,7 @@ using Google.Apis.Testing;
 using Google.Apis.Util;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Google.Apis.Tests.Apis.Discovery
 {
@@ -38,12 +39,7 @@ namespace Google.Apis.Tests.Apis.Discovery
         private class ConcreteClass : BaseService
         {
             public ConcreteClass(JsonDictionary js)
-              : base(js, new ConcreteFactoryParameters()) { }
-
-            public override DiscoveryVersion DiscoveryVersion
-            {
-                get { return DiscoveryVersion.Version_1_0; }
-            }
+                : base(ServiceFactory.Default, js, new ConcreteFactoryParameters()) { }
 
             public new string ServerUrl 
             {
@@ -58,7 +54,7 @@ namespace Google.Apis.Tests.Apis.Discovery
 
             #region Nested type: ConcreteFactoryParameters
 
-            private class ConcreteFactoryParameters : BaseFactoryParameters
+            private class ConcreteFactoryParameters : FactoryParameters
             {
                 public ConcreteFactoryParameters() : base("http://test/", "testService/") {}
             }
@@ -452,7 +448,7 @@ namespace Google.Apis.Tests.Apis.Discovery
             topJson.Add("resources", new JsonDictionary { { "Sub", subJson } });
 
             // Create the resource hierachy.
-            var topResource = new ResourceV1_0(new KeyValuePair<string, object>("Top", topJson));
+            var topResource = ServiceFactory.Default.CreateResource("Top", topJson);
             var subResource = topResource.Resources["Sub"];
             var grandchildResource = subResource.Resources["Grandchild"];
             container.Resources.Add("Top", topResource); 
@@ -504,6 +500,58 @@ namespace Google.Apis.Tests.Apis.Discovery
                 instance.ServerUrl = "https://www.test.value/";
                 Assert.AreEqual("https://www.test.value/test//", instance.BaseUri.ToString());
             }
+        }
+
+
+        [Test]
+        public void RemoveAnnotations()
+        {
+            string json = @"
+{
+ 'schemas': {
+  'Event': {
+   'id': 'Event',
+   'type': 'object',
+   'properties': {
+    'description': {
+     'type': 'string',
+     'description': 'Description of the event. Optional.'
+    },
+    'end': {
+     '$ref': 'EventDateTime',
+     'description': 'The (exclusive) end time of the event. For a recurring event, this is the end time of the first instance.',
+     'annotations': {
+      'required': [
+       'calendar.events.import',
+       'calendar.events.insert',
+       'calendar.events.update'
+      ]
+     }
+    },
+   }
+  }
+ }
+}";
+
+            JsonDictionary js = Google.Apis.Json.JsonReader.Parse(json) as JsonDictionary;
+            var end = AssertNode(js, "schemas", "Event", "properties", "end");
+            Assert.That(end.Count, Is.EqualTo(3));
+            Assert.That(end.ContainsKey("annotations"), Is.True);
+            BaseService.RemoveAnnotations(js, 0);
+            Assert.That(end.Count, Is.EqualTo(2));
+            Assert.That(end.ContainsKey("annotations"), Is.False);
+        }
+
+        private JsonDictionary AssertNode(JsonDictionary dict, params string[] nodes)
+        {
+            JsonDictionary cur = dict;
+            for(int i=0;i<nodes.Length;i++)
+            {
+                Assert.That(cur.ContainsKey(nodes[i]));
+                Assert.That(cur[nodes[i]], Is.TypeOf(typeof(JsonDictionary)));
+                cur = cur[nodes[i]] as JsonDictionary;
+            }
+            return cur;
         }
     }
 }

@@ -120,30 +120,16 @@ namespace Google.Apis.Tools.CodeGen.Decorator.ServiceDecorator
         [VisibleForTestOnly]
         internal CodeExpression GetVersionSpecificParameter(IService service, CodeTypeDeclaration serviceClass)
         {
-            // Example:  DiscoveryService.BaseUri
-            var baseUriRef = new CodeFieldReferenceExpression(
-                new CodeTypeReferenceExpression(serviceClass.Name), VersionInformationServiceDecorator.BaseUriName);
+            // Example:  "http://www.example.com/" (The hard-coded baseUri)
+            var baseUriRef = new CodePrimitiveExpression(service.BaseUri.ToString());
 
             // Example:  new Uri(..)
             var uriConstructor = new CodeObjectCreateExpression();
             uriConstructor.CreateType = new CodeTypeReference(typeof(Uri));
             uriConstructor.Parameters.Add(baseUriRef);
 
-            // Example:  new ..FactoryParameters(..)
-            switch (service.DiscoveryVersion)
-            {
-                case DiscoveryVersion.Version_0_3:
-                    return new CodeObjectCreateExpression(
-                        typeof(FactoryParameterV0_3), uriConstructor);
-
-                case DiscoveryVersion.Version_1_0:
-                    return new CodeObjectCreateExpression(
-                        typeof(FactoryParameterV1_0), uriConstructor);
-
-                default:
-                    throw new NotSupportedException(
-                        "The Discovery version " + service.DiscoveryVersion + " is not yet supported");
-            }
+            return new CodeObjectCreateExpression(
+                typeof(FactoryParameters), uriConstructor);
         }
 
         public override string ToString()

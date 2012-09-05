@@ -1,0 +1,3 @@
+[submodule "vendors/tweetsharp"]
+	path = vendors/tweetsharp
+	url = git://github.com/danielcrenna/tweetsharp.git

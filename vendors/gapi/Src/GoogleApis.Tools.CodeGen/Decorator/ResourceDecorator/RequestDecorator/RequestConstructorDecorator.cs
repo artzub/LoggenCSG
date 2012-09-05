@@ -32,27 +32,22 @@ namespace Google.Apis.Tools.CodeGen.Decorator.ResourceDecorator.RequestDecorator
     /// <c>public ListRequest(ISchemaAwareRequestExecutor service, int requiredParameter, ..) : base(service) {..}</c>
     /// <c>public ListRequest(ISchemaAwareRequestExecutor s, int required, string optional..) : base(service) {..}</c>
     /// </summary>
-    public class RequestConstructorDecorator : IRequestDecorator
+    public class RequestConstructorDecorator : BaseRequestConstructorDecorator
     {
         /// <summary>
         /// Defines whether this decorator should also add a constructor containing optional and mandatory parameters.
         /// </summary>
         public bool CreateOptionalConstructor { get; set; }
 
-        private readonly IObjectTypeProvider objectTypeProvider;
-
         /// <summary>
         /// Creates a new request constructor decorator.
         /// </summary>
         /// <remarks>Will create only the mandatory-only constructor</remarks>
-        public RequestConstructorDecorator(IObjectTypeProvider objectTypeProvider)
-        {
-            this.objectTypeProvider = objectTypeProvider;
-        }
+        public RequestConstructorDecorator(IObjectTypeProvider objectTypeProvider) : base(objectTypeProvider) { }
 
         #region IRequestDecorator Members
 
-        public void DecorateClass(IResource resource,
+        public override void DecorateClass(IResource resource,
                                   IMethod request,
                                   CodeTypeDeclaration requestClass,
                                   CodeTypeDeclaration resourceClass)
@@ -90,81 +85,6 @@ namespace Google.Apis.Tools.CodeGen.Decorator.ResourceDecorator.RequestDecorator
             AddRequestParameters(resourceClass, request, constructor, addOptionalParameters);
 
             return constructor;
-        }
-
-        /// <summary>
-        /// Adds the body parameter and statement to the constructor if it is required.
-        /// </summary>
-        [VisibleForTestOnly]
-        internal void AddBodyParameter(CodeConstructor constructor, IMethod request)
-        {
-            const string varName = "body";
-            if (!request.HasBody)
-            {
-                return; // No body parameter required.
-            }
-
-            CodeTypeReference bodyType = objectTypeProvider.GetBodyType(request);
-            var thisRef = new CodeThisReferenceExpression();
-
-            // TBody body
-            constructor.Parameters.Add(new CodeParameterDeclarationExpression(bodyType, varName));
-
-            // this.Body = body;
-            var assign = new CodeAssignStatement();
-            assign.Left = new CodePropertyReferenceExpression(thisRef, BodyPropertyDecorator.BodyPropertyName);
-            assign.Right = new CodeVariableReferenceExpression(varName);
-            constructor.Statements.Add(assign);
-        }
-
-        /// <summary>
-        /// Adds all required parameters and assign statements of this request to the specified constructor.
-        /// </summary>
-        [VisibleForTestOnly]
-        internal void AddRequestParameters(CodeTypeDeclaration resourceClass,
-                                           IMethod request,
-                                           CodeConstructor constructor,
-                                           bool addOptional)
-        {
-            if (request.Parameters == null)
-            {
-                return; // Nothing to do here.
-            }
-
-            foreach (IParameter parameter in request.GetAllParametersSorted())
-            {
-                if (!addOptional && !parameter.IsRequired)
-                {
-                    continue;
-                }
-
-                // Retrieve parameter name and type.
-                string name = parameter.Name;
-                CodeTypeReference type = ResourceBaseGenerator.GetParameterTypeReference(
-                    resourceClass, parameter);
-
-                // Generate valid names for the parameter and the field.
-                IEnumerable<string> usedWords = from IParameter p in request.Parameters.Values select p.Name;
-                string parameterName = GeneratorUtils.GetParameterName(parameter, usedWords.Without(parameter.Name));
-                string fieldName = GeneratorUtils.GetFieldName(name, Enumerable.Empty<string>());
-
-                // Add the constructor parameter. (e.g. JsonSchema schema)
-                var newParameter = new CodeParameterDeclarationExpression(type, parameterName);
-                constructor.Parameters.Add(newParameter);
-
-                // Make the parameter optional if required.
-                if (!parameter.IsRequired)
-                {
-                    var optionalTypeRef = new CodeTypeReference(typeof(OptionalAttribute));
-                    newParameter.CustomAttributes.Add(new CodeAttributeDeclaration(optionalTypeRef));
-                }
-
-                // Add the initialization expression (e.g. this.schema = schema;)
-                var initStatement = new CodeAssignStatement();
-                initStatement.Left = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), fieldName);
-                initStatement.Right = new CodeVariableReferenceExpression(parameterName);
-                constructor.Statements.Add(initStatement);
-            }
         }
     }
 }

@@ -36,9 +36,12 @@ namespace Google.Apis.Tests.Apis.Requests
         private const string SimpleDeveloperKey = "ABC123";
         private const string ComplexDeveloperKey = "?&^%  ABC123";
 
-        private class MockAuthenticator : Authenticator {}
+        private class MockAuthenticator : IAuthenticator
+        {
+            public void ApplyAuthenticationToRequest(HttpWebRequest request) { }
+        }
 
-        private class MockErrorHandlingAuthenticator : Authenticator, IErrorResponseHandler
+        private class MockErrorHandlingAuthenticator : IAuthenticator, IErrorResponseHandler
         {
             #region IErrorResponseHandler Members
 
@@ -50,6 +53,8 @@ namespace Google.Apis.Tests.Apis.Requests
             public void HandleErrorResponse(WebException exception, RequestError error, WebRequest request) {}
 
             #endregion
+
+            public void ApplyAuthenticationToRequest(HttpWebRequest request) { }
         }
 
         private void AssertBody(bool gzipEnabled, string body,
@@ -64,25 +69,29 @@ namespace Google.Apis.Tests.Apis.Requests
             // Create a mock webrequest.
             var requestStream = new MemoryStream();
             var mockWebrequest = new Mock<WebRequest>();
-            mockWebrequest
-                .Setup(r => r.BeginGetRequestStream(It.IsAny<AsyncCallback>(), It.IsAny<object>()))
-                .Callback((AsyncCallback res, object state) =>
-                              {
-                                  Mock<IAsyncResult> async = new Mock<IAsyncResult>();
-                                  async.SetupGet(r => r.AsyncState).Returns(state);
-                                  res(async.Object);
-                              });
+
             mockWebrequest.Setup(r => r.EndGetRequestStream(It.IsAny<IAsyncResult>())).Returns(requestStream);
             mockWebrequest.Setup(r => r.Headers).Returns(headers);
 
+            var waitHandle = new System.Threading.AutoResetEvent(false);
+
             // Call the method we are testing
             request.WithBody(body);
-            request.AttachBody(mockWebrequest.Object);
+
+            Action<WebRequest> x = (r) => waitHandle.Set();
+
+            var mockasync = new Mock<IAsyncResult>();
+            mockasync.Setup(r => r.AsyncState).Returns(new object[] { mockWebrequest.Object, x });
+
+            request.EndAttachBody(mockasync.Object);
+
+            if (!waitHandle.WaitOne(3000))
+            {
+                Assert.Fail("AttachBody did not complete.");
+            }
 
             // Confirm the results.
-            mockWebrequest.Verify(
-                r => r.BeginGetRequestStream(It.IsAny<AsyncCallback>(), It.IsAny<object>()), Times.Once());
-            mockWebrequest.Verify(r => r.EndGetRequestStream(It.IsAny<IAsyncResult>()), Times.Once());
+            mockWebrequest.Verify(r => r.EndGetRequestStream(It.IsAny<System.IAsyncResult>()), Times.Once());
 
             if (additionalAsserts != null)
             {
@@ -181,7 +190,7 @@ namespace Google.Apis.Tests.Apis.Requests
                         });
 
             request.WithParameters(parameterValues);
-            var url = request.BuildRequestUrl();
+            var url = request.BuildRequest().RequestUri;
 
             Assert.AreEqual(
                 "https://example.com/?alt=json&optionalWithEmpty=d&" +
@@ -201,7 +210,7 @@ namespace Google.Apis.Tests.Apis.Requests
                     service,
                     new MockMethod { HttpMethod = "GET", Name = "TestMethod", RestPath = "https://example.com" });
             request.WithKey(SimpleDeveloperKey).WithParameters(new Dictionary<string, string>());
-            var url = request.BuildRequestUrl();
+            var url = request.BuildRequest().RequestUri;
 
             Assert.AreEqual("https://example.com/?alt=json" + "&key=" + SimpleDeveloperKey, url.ToString());
         }
@@ -228,7 +237,7 @@ namespace Google.Apis.Tests.Apis.Requests
         {
             var request = GetSimpleRequest();
             request.WithUserIp("FooBar");
-            var url = request.BuildRequestUrl();
+            var url = request.BuildRequest().RequestUri;
             Assert.IsTrue(url.ToString().EndsWith("&userIp=FooBar"));
         }
 
@@ -240,7 +249,7 @@ namespace Google.Apis.Tests.Apis.Requests
         {
             var request = GetSimpleRequest();
             request.WithFields("FooBar");
-            var url = request.BuildRequestUrl();
+            var url = request.BuildRequest().RequestUri;
             Assert.IsTrue(url.ToString().EndsWith("&fields=FooBar"));
         }
 
@@ -257,7 +266,7 @@ namespace Google.Apis.Tests.Apis.Requests
                     service,
                     new MockMethod { HttpMethod = "GET", Name = "TestMethod", RestPath = "https://example.com" });
             request.WithKey(ComplexDeveloperKey).WithParameters(new Dictionary<string, string>());
-            var url = request.BuildRequestUrl();
+            var url = request.BuildRequest().RequestUri;
 
             Assert.AreEqual("https://example.com/?alt=json" + "&key=%3F%26%5E%25%20%20ABC123", url.AbsoluteUri);
         }
@@ -303,7 +312,7 @@ namespace Google.Apis.Tests.Apis.Requests
                         });
 
             request.WithParameters(parameterValues);
-            var url = request.BuildRequestUrl();
+            var url = request.BuildRequest().RequestUri;
 
             Assert.AreEqual("https://example.com/?alt=json&optionalWithValue=b&required=a", url.AbsoluteUri);
         }
@@ -338,7 +347,7 @@ namespace Google.Apis.Tests.Apis.Requests
                         });
 
             request.WithParameters(query);
-            var url = request.BuildRequestUrl();
+            var url = request.BuildRequest().RequestUri;
 
             // Check that the resulting query string is identical with the input.
             Assert.AreEqual("?alt=json&" + query, url.Query);
@@ -385,9 +394,10 @@ namespace Google.Apis.Tests.Apis.Requests
                         { HttpMethod = "POST", Name = "TestMethod", RestPath = "https://example.com/test", });
 
             request.WithParameters("");
-            HttpWebRequest webRequest = (HttpWebRequest) request.CreateWebRequest();
+            HttpWebRequest webRequest = (HttpWebRequest)request.CreateWebRequest((r) => { });
 
             // Test that the header is set, even if no body is specified.
+            Assert.AreEqual("POST", webRequest.Method);
             Assert.AreEqual(0, webRequest.ContentLength);
 
             // The content-length field will be automatically set as soon as content is written into the
@@ -416,7 +426,7 @@ namespace Google.Apis.Tests.Apis.Requests
 
             request.WithParameters("");
 
-            HttpWebRequest webRequest = (HttpWebRequest) request.CreateWebRequest();
+            HttpWebRequest webRequest = (HttpWebRequest)request.CreateWebRequest((r) => { });
             Assert.IsTrue(webRequest.Headers[HttpRequestHeader.ContentType].Contains("charset=utf-8"));
             Assert.IsNotNull(webRequest);
         }
@@ -436,7 +446,7 @@ namespace Google.Apis.Tests.Apis.Requests
 
             request.WithParameters("");
 
-            HttpWebRequest webRequest = (HttpWebRequest) request.CreateWebRequest();
+            HttpWebRequest webRequest = (HttpWebRequest)request.CreateWebRequest((r) => { });
 
             // Test the default user agent (without gzip):
             string expectedUserAgent = string.Format(
@@ -447,7 +457,7 @@ namespace Google.Apis.Tests.Apis.Requests
             // Confirm that the (gzip) tag is added if GZip is supported.
             service.GZipEnabled = true;
             expectedUserAgent += " (gzip)";
-            webRequest = (HttpWebRequest) request.CreateWebRequest();
+            webRequest = (HttpWebRequest)request.CreateWebRequest((r) => { });
             Assert.AreEqual(expectedUserAgent, webRequest.UserAgent);
         }
 
@@ -531,31 +541,31 @@ namespace Google.Apis.Tests.Apis.Requests
             
             // No etag:
             request.WithETagAction(ETagAction.Ignore).WithETag("test123");
-            HttpWebRequest webRequest = (HttpWebRequest)request.CreateWebRequest();
+            HttpWebRequest webRequest = (HttpWebRequest)request.CreateWebRequest((r) => { });
             Assert.IsNull(webRequest.Headers[HttpRequestHeader.IfMatch]);
             Assert.IsNull(webRequest.Headers[HttpRequestHeader.IfNoneMatch]);
 
             // No etag (2):
             request.WithETagAction(ETagAction.IfMatch).WithETag(null);
-            webRequest = (HttpWebRequest)request.CreateWebRequest();
+            webRequest = (HttpWebRequest)request.CreateWebRequest((r) => { });
             Assert.IsNull(webRequest.Headers[HttpRequestHeader.IfMatch]);
             Assert.IsNull(webRequest.Headers[HttpRequestHeader.IfNoneMatch]);
 
             // If-Match:
             request.WithETagAction(ETagAction.IfMatch).WithETag("test123");
-            webRequest = (HttpWebRequest)request.CreateWebRequest();
+            webRequest = (HttpWebRequest)request.CreateWebRequest((r) => { });
             Assert.AreEqual("test123", webRequest.Headers[HttpRequestHeader.IfMatch]);
             Assert.IsNull(webRequest.Headers[HttpRequestHeader.IfNoneMatch]);
 
             // If-None-Match:
             request.WithETagAction(ETagAction.IfNoneMatch).WithETag("test123");
-            webRequest = (HttpWebRequest)request.CreateWebRequest();
+            webRequest = (HttpWebRequest)request.CreateWebRequest((r) => { });
             Assert.IsNull(webRequest.Headers[HttpRequestHeader.IfMatch]);
             Assert.AreEqual("test123", webRequest.Headers[HttpRequestHeader.IfNoneMatch]);
 
             // Default:
             request.WithETagAction(ETagAction.Default).WithETag("test123");
-            webRequest = (HttpWebRequest)request.CreateWebRequest();
+            webRequest = (HttpWebRequest)request.CreateWebRequest((r) => { });
             Assert.IsNull(webRequest.Headers[HttpRequestHeader.IfMatch]);
             Assert.AreEqual("test123", webRequest.Headers[HttpRequestHeader.IfNoneMatch]);
         }

@@ -14,9 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using System;
 using System.CodeDom;
 using Google.Apis.Discovery;
 using Google.Apis.Requests;
+using Google.Apis.Upload;
 
 namespace Google.Apis.Tools.CodeGen.Decorator.ResourceDecorator.RequestDecorator
 {
@@ -47,7 +49,6 @@ namespace Google.Apis.Tools.CodeGen.Decorator.ResourceDecorator.RequestDecorator
                                    ? new CodeTypeReference(typeof(string))
                                    : objectTypeProvider.GetReturnType(request);
 
-            // Create the base reference
             var baseRef = new CodeTypeReference(typeof(ServiceRequest<>));
             baseRef.TypeArguments.Add(responseType);
             requestClass.BaseTypes.Add(baseRef);

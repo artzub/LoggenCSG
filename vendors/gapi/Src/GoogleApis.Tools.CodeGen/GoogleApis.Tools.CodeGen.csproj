@@ -66,6 +66,9 @@
     <Compile Include="Decorator\DefaultObjectProvider.cs" />
     <Compile Include="Decorator\IObjectProvider.cs" />
     <Compile Include="Decorator\ResourceDecorator\RequestDecorator\BodyPropertyDecorator.cs" />
+    <Compile Include="Decorator\ResourceDecorator\RequestDecorator\BaseRequestConstructorDecorator.cs" />
+    <Compile Include="Decorator\ResourceDecorator\RequestDecorator\ResumableUploadInheritanceDecorator.cs" />
+    <Compile Include="Decorator\ResourceDecorator\RequestDecorator\UploadConstructorDecorator.cs" />
     <Compile Include="Decorator\ResourceDecorator\RequestMethodResourceDecorator.cs" />
     <Compile Include="Decorator\ResourceDecorator\RequestDecorator\RequestConstructorDecorator.cs" />
     <Compile Include="Decorator\ResourceDecorator\RequestDecorator\ServiceRequestFieldDecorator.cs" />
@@ -79,6 +82,7 @@
     <Compile Include="Decorator\ResourceDecorator\StandardConstructorResourceDecorator.cs" />
     <Compile Include="Decorator\SchemaDecorator\AdditionalPropertiesSchemaDecorator.cs" />
     <Compile Include="Decorator\SchemaDecorator\ArraySchemaDecorator.cs" />
+    <Compile Include="Decorator\SchemaDecorator\IPropertyDecorator.cs" />
     <Compile Include="Decorator\SchemaDecorator\ResponseInterfaceDecorator.cs" />
     <Compile Include="Decorator\ServiceDecorator\ScopeEnumDecorator.cs" />
     <Compile Include="Generator\RequestClassGenerator.cs" />
@@ -114,7 +118,6 @@
     <Compile Include="Decorator\ServiceDecorator\JsonSerializationMethods.cs" />
     <Compile Include="Decorator\SchemaDecorator\NewtonSoftPropertyAttributeDecorator.cs" />
     <Compile Include="Decorator\SchemaDecorator\StandardSchemaCommentDecorator.cs" />
-    <Compile Include="Decorator\SchemaDecorator\SchemaUtil.cs" />
     <Compile Include="Decorator\ResourceDecorator\MethodCommentCreator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
